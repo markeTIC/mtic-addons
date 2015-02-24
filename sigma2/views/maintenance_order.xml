@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!-- Orden de mantenimiento views -->
+        <record id="maintenance_order_list_action" model="ir.actions.act_window">
+            <field name="name">Órdenes de mantenimiento</field>
+            <field name="res_model">sigma2.maintenance.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para crear una orden de mantenimiento 
+                </p>
+                <p>
+                    Gestión de órdenes de mantenimiento de SIGMa 2.
+                </p>
+            </field>
+        </record>
+
+        <record id="maintenance_order_list_view" model="ir.ui.view">
+            <field name="name">Lista de órdenes de mantenimiento</field>
+            <field name="model">sigma2.maintenance.order</field>
+            <field name="arch" type="xml">
+                <tree> 
+                    <field name="order_type_id"/>
+                    <field name="code"/>
+                    <field name="date"/>
+                    <field name="origin_department_id"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+		
+		<record id="maintenance_order_form_view" model="ir.ui.view">
+            <field name="name">Formulario orden de mantenimiento</field>
+            <field name="model">sigma2.maintenance.order</field>
+            <field name="arch" type="xml">
+                <form string="Orden de mantenimiento">
+                    <sheet>
+                        <div class="oe_right oe_button_box">
+                        </div>
+                        <div class="oe_title" style="width: 25%%">
+                            <h1>
+                                <field name="display_name"/>
+                            </h1>
+                        </div>
+                        <group colspan="4">
+	                        <group>
+	                            <field name="order_type_id" options="{'no_create': True}" attrs="{'invisible':[('param_order_type_code', '!=', False)]}"/>
+			                    <field name="code"/>
+	                            <field name="origin_employee_id" options="{'no_create': True}"/>
+	                            <field name="asset_level1" options="{'no_create': True}"/>
+	                            <field name="asset_level2" options="{'no_create': True}"/>
+	                            <field name="asset_level3" options="{'no_create': True}"/>
+	                            <field name="status_date" invisible="1"/>
+	                            <field name="asset_id" invisible="1"/>
+	                            <field name="param_order_type_code" invisible="1"/>
+	                        </group>
+	                        <group>
+	                            <field name="date"/>
+	                            <field name="origin_department_id" readonly="1"/>
+	                            <field name="hour"/>
+	                            <field name="work_shift"/>
+	                            <field name="priority"/>
+	                            <field name="status"/>
+	                            <field name="status_note" attrs="{'invisible':[('status', '!=', 'canceled'), ('status', '!=', 'disposed')]}"/>
+	                        </group>
+                        </group>
+                        <notebook>
+                        	 <page string="Descripción">
+		                        <group>
+		                            <field name="description" nolabel="1" placeholder="Descripción del trabajo" />
+		                        </group>
+                        	 </page>
+                        	 <page string="Trabajadores">
+		                        <field name="worker_ids" nolabel="1">
+		                        	<tree editable="bottom">
+		                        		<field name="employee_id" options="{'no_create': True}"/>
+		                        		<field name="start_date"/>
+		                        		<field name="work_time"/>
+		                        	</tree>
+		                        </field>
+                        	 </page>
+                        	 <page string="Recambios">
+		                        <field name="part_ids" nolabel="1">
+		                        	<tree editable="bottom">
+		                        		<field name="product_id" options="{'no_create': True}"/>
+		                        		<field name="qty"/>
+		                        	</tree>
+		                        </field>
+                        	 </page>
+                        	 <page string="Resultado">
+		                        <group>
+		                            <field name="solution_description" nolabel="1" placeholder="Resultado del trabajo" />
+		                        </group>
+		                        <group>
+			                        <group>
+			                            <field name="start_date"/>
+			                            <field name="end_date"/>
+			                        </group>
+			                        <group>
+			                            <field name="repair_time"/>
+			                            <field name="stop_time"/>
+			                            <field name="stop_time_rated" groups="base.group_no_one"/>
+			                        </group>
+		                        </group>
+                        	 </page>
+                        	 <page string="Notas">
+		                        <group>
+		                            <field name="notes" nolabel="1" placeholder="Notas" />
+		                        </group>
+                        	 </page>
+                        </notebook>
+                        <group>
+	                        <group>
+	                            <field name="asigned_employee_id" options="{'no_create': True}"/>
+	                            <field name="planned_date"/>
+	                        </group>
+	                        <group>
+	                            <field name="authorization_employee_id" options="{'no_create': True}"/>
+	                        </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="maintenance_order_search_view" model="ir.ui.view">
+            <field name="name">sigma2.maintenance.order.search</field>
+            <field name="model">sigma2.maintenance.order</field>
+            <field name="arch" type="xml">
+                <search string="Orden de mantenimiento">
+                    <field name="code"/>
+                    <filter string="Pendientes" name="filter_pending" domain="[('status','=','pending')]"/>
+                    <filter string="Planificadas" name="filter_planned" domain="[('status','=','planned')]"/>
+                    <filter string="En curso" name="filter_open" domain="[('status','=','open')]"/>
+                    <filter string="Finalizadas" name="filter_finished" domain="[('status','=','finished')]"/>
+                    <filter string="Canceladas" name="filter_canceled" domain="[('status','=','canceled')]"/>
+                    <filter string="Rechazadas" name="filter_disposed" domain="[('status','=','rejected')]"/>
+                    <separator />
+                    <filter string="Preventivo" name="filter_preventive" domain="[('order_type_id.code','=','P')]"/>
+                    <filter string="Correctivo" name="filter_corrective" domain="[('order_type_id.code','=','C')]"/>
+                    <filter string="Mejora" name="filter_improvement" domain="[('order_type_id.code','=','M')]"/>
+                    <filter string="Legal" name="filter_regulatory" domain="[('order_type_id.code','=','L')]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="prev_maintenance_order_list_action" model="ir.actions.act_window">
+            <field name="name">Órdenes de preventivo</field>
+            <field name="res_model">sigma2.maintenance.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="maintenance_order_list_view"/>
+            <field name="search_view_id" ref="maintenance_order_search_view"/>
+            <field name="context">{'search_default_filter_preventive': 1, 'default_param_order_type_code': 'P'}</field>
+            <field name="limit">100</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para crear una orden de mantenimiento preventivo 
+                </p>
+                <p>
+                    Las órdenes de preventivo se generan automáticamente a partir de las gamas de mantenimiento.
+                </p>
+            </field>
+        </record>
+
+        <record id="corr_maintenance_order_list_action" model="ir.actions.act_window">
+            <field name="name">Órdenes de correctivo</field>
+            <field name="res_model">sigma2.maintenance.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="maintenance_order_list_view"/>
+            <field name="search_view_id" ref="maintenance_order_search_view"/>
+            <field name="context">{'search_default_filter_corrective': 1, 'default_param_order_type_code': 'C'}</field>
+            <field name="limit">100</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para crear una orden de mantenimiento correctivo 
+                </p>
+                <p>
+                    Las órdenes de correctivo se crean cuando surge una incidencia o avería en producción que requiere de la intervención de mantenimiento.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</openerp>

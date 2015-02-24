@@ -1,0 +1,29 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+sigma2_location_employee,Zona SIGMa 2 - Employee,model_sigma2_location,base.group_user,1,1,0,0
+sigma2_location_manager,Zona SIGMa 2 - Manager,model_sigma2_location,base.group_partner_manager,1,1,1,1
+sigma2_cost_area_employee,Area de coste SIGMa 2 - Employee,model_sigma2_cost_area,base.group_user,1,1,0,0
+sigma2_cost_area_manager,Area de coste SIGMa 2 - Manager,model_sigma2_cost_area,base.group_partner_manager,1,1,1,1
+sigma2_investment_employee,Inversión SIGMa 2 - Employee,model_sigma2_investment,base.group_user,1,1,0,0
+sigma2_investment_manager,Inversión SIGMa 2 - Manager,model_sigma2_investment,base.group_partner_manager,1,1,1,1
+sigma2_asset_class_employee,Clase activo SIGMa 2 - Employee,model_sigma2_asset_class,base.group_user,1,1,0,0
+sigma2_asset_class_manager,Clase activo SIGMa 2 - Manager,model_sigma2_asset_class,base.group_partner_manager,1,1,1,1
+sigma2_asset_type_employee,Tipo activo SIGMa 2 - Employee,model_sigma2_asset_type,base.group_user,1,1,0,0
+sigma2_asset_type_manager,Tipo activo SIGMa 2 - Manager,model_sigma2_asset_type,base.group_partner_manager,1,1,1,1
+sigma2_asset_employee,Activo SIGMa 2 - Employee,model_sigma2_asset,base.group_user,1,1,0,0
+sigma2_asset_manager,Activo SIGMa 2 - Manager,model_sigma2_asset,base.group_partner_manager,1,1,1,1
+sigma2_procedure_employee,Procedimiento SIGMa 2 - Employee,model_sigma2_procedure,base.group_user,1,1,0,0
+sigma2_procedure_manager,Procedimiento SIGMa 2 - Manager,model_sigma2_procedure,base.group_partner_manager,1,1,1,1
+sigma2_order_type_employee,Tipo orden SIGMa 2 - Employee,model_sigma2_order_type,base.group_user,1,1,0,0
+sigma2_order_type_manager,Tipo orden SIGMa 2 - Manager,model_sigma2_order_type,base.group_partner_manager,1,1,1,1
+sigma2_action_planning_employee,Gama SIGMa 2 - Employee,model_sigma2_action_planning,base.group_user,1,1,0,0
+sigma2_action_planning_manager,Gama SIGMa 2 - Manager,model_sigma2_action_planning,base.group_partner_manager,1,1,1,1
+sigma2_asset_counter_employee,Activo Contador SIGMa 2 - Employee,model_sigma2_asset_counter,base.group_user,1,1,0,0
+sigma2_asset_counter_manager,Activo Contador SIGMa 2 - Manager,model_sigma2_asset_counter,base.group_partner_manager,1,1,1,1
+sigma2_speciality_employee,Especialidad SIGMa 2 - Employee,model_sigma2_speciality,base.group_user,1,1,0,0
+sigma2_speciality_manager,Especialidad SIGMa 2 - Manager,model_sigma2_speciality,base.group_partner_manager,1,1,1,1
+sigma2_maintenance_order_employee,Orden mantenimiento SIGMa 2 - Employee,model_sigma2_maintenance_order,base.group_user,1,1,0,0
+sigma2_maintenance_order_manager,Orden mantenimiento SIGMa 2 - Manager,model_sigma2_maintenance_order,base.group_partner_manager,1,1,1,1
+sigma2_maintenance_order_worker_employee,Trabajador orden mantenimiento SIGMa 2 - Employee,model_sigma2_maintenance_order_worker,base.group_user,1,1,0,0
+sigma2_maintenance_order_worker_manager,Trabajador orden mantenimiento SIGMa 2 - Manager,model_sigma2_maintenance_order_worker,base.group_partner_manager,1,1,1,1
+sigma2_maintenance_order_part_employee,Repuesto orden mantenimiento SIGMa 2 - Employee,model_sigma2_maintenance_order_part,base.group_user,1,1,0,0
+sigma2_maintenance_order_part_manager,Repuesto orden mantenimiento SIGMa 2 - Manager,model_sigma2_maintenance_order_part,base.group_partner_manager,1,1,1,1

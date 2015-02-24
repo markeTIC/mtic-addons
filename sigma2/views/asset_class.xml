@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!-- Clase de activo views -->
+        <record id="asset_class_list_action" model="ir.actions.act_window">
+            <field name="name">Clases de activo</field>
+            <field name="res_model">sigma2.asset.class</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para crear una clase de activo. 
+                </p>
+                <p>
+                    Mantenimiento de clases de activos de SIGMa 2.<br/>
+                    La clase del activo permite clasificar los diferentes activos en base a criterios de uso, por ejemplo: Básculas, Carretillas, etc.<br/>
+                    Permite indicar si es necesario aplicar alguna inspección reglamentaria al activo.
+                </p>
+            </field>
+        </record>
+
+        <record id="asset_class_list_view" model="ir.ui.view">
+            <field name="name">Lista de clases de activos</field>
+            <field name="model">sigma2.asset.class</field>
+            <field name="arch" type="xml">
+                <tree string="Lista de clases de activo"> 
+                    <field name="name"/>
+                    <field name="regulatory_inspection"/>
+                    <field name="applicable_regulations"/>
+                </tree>
+            </field>
+        </record>
+		
+		<record id="asset_class_form_view" model="ir.ui.view">
+            <field name="name">Formulario clase de activo</field>
+            <field name="model">sigma2.asset.class</field>
+            <field name="arch" type="xml">
+                <form string="Clase de activo">
+                    <sheet>
+                        <div class="oe_right oe_button_box">
+                        </div>
+                        <div class="oe_title" style="width: 75%%">
+                            <h1>
+                                <field name="name" placeholder="Clase de activo"/>
+                            </h1>
+                        </div>
+                        <group colspan="4">
+	                        <group>
+	                            <field name="regulatory_inspection"/>
+	                            <field name="applicable_regulations" attrs="{'invisible':[('regulatory_inspection', '=', False)]}"/>
+	                            <field name="active"/>
+	                        </group>
+                        </group>
+                        <group>
+                            <field name="notes" nolabel="1" placeholder="Notas" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>

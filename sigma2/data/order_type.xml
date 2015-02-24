@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+		<record id="order_type_C" model="sigma2.order.type">
+			<field name="code">C</field>
+			<field name="name">Correctivo</field>
+			<field name="counter" ref="corr_maintenance_order_id"/>
+		</record>
+		
+		<record id="order_type_P" model="sigma2.order.type">
+			<field name="code">P</field>
+			<field name="name">Preventivo</field>
+			<field name="counter" ref="prev_maintenance_order_id"/>
+		</record>
+		
+		<record id="order_type_M" model="sigma2.order.type">
+			<field name="code">M</field>
+			<field name="name">Mejora</field>
+			<field name="counter" ref="mej_maintenance_order_id"/>
+		</record>
+		
+		<record id="order_type_L" model="sigma2.order.type">
+			<field name="code">L</field>
+			<field name="name">Legal</field>
+			<field name="counter" ref="leg_maintenance_order_id"/>
+		</record>
+		
+    </data>
+</openerp>

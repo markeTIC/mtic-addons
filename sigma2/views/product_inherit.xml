@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    
+        <record id="product_template_form_view" model="ir.ui.view">
+            <field name="name">sigma2.product.template.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <field name="manufacturer_id" position="before">
+                   <group colspan="4">
+                    	<group>
+                    		<field name="atex"/>
+                    	</group>
+                    	<group>
+                    		<field name="barcode"/>
+                    	</group>
+                    </group>
+	               	<label for="category" string="Familia"/>
+	                <div><field name="category" colspan="3" nolabel="1"/></div>
+	            </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
+

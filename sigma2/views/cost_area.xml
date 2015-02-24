@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!-- Area de coste views -->
+        <record id="cost_area_list_action" model="ir.actions.act_window">
+            <field name="name">Áreas de coste</field>
+            <field name="res_model">sigma2.cost.area</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para crear una área de coste. 
+                </p>
+                <p>
+                    Mantenimiento de áreas de coste de SIGMa 2.
+                    El área de coste permite agrupar los costes de las compras de recambios.
+                </p>
+            </field>
+        </record>
+
+        <record id="cost_area_list_view" model="ir.ui.view">
+            <field name="name">Lista de áreas de coste</field>
+            <field name="model">sigma2.cost.area</field>
+            <field name="arch" type="xml">
+                <tree string="Lista de áreas de coste"> 
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                    <field name="investment"/>
+                </tree>
+            </field>
+        </record>
+		
+		<record id="cost_area_form_view" model="ir.ui.view">
+            <field name="name">Formulario área de coste</field>
+            <field name="model">sigma2.cost.area</field>
+            <field name="arch" type="xml">
+                <form string="Área de coste">
+                    <sheet>
+                        <div class="oe_right oe_button_box">
+                        </div>
+                        <div class="oe_title" style="width: 15%%">
+                            <h1>
+	                        	<field name="code" placeholder="Código"/>
+                            </h1>
+                        </div>
+                        <div class="oe_title" style="width: 85%%">
+                            <h1>
+                                <field name="name" placeholder="Área de coste"/>
+                            </h1>
+                        </div>
+                        <group colspan="4">
+	                        <group>
+                                <field name="parent_id"/>
+	                        </group>
+	                        <group>
+                                <field name="investment"/>
+	                            <field name="active"/>
+	                        </group>
+                        </group>
+                        <group>
+                            <field name="notes" nolabel="1" placeholder="Notas" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>

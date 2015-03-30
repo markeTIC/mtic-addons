@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'SIGMa 2',
-    'version': '1.0.38',
+    'version': '1.0.40',
     'category': 'Mantenimiento',
     'sequence': 1,
     'complexity': 'easy',
@@ -47,6 +47,9 @@ TODO:
         'data/sequences.xml',
         'data/order_type.xml',
         'views/product_inherit.xml',
+        'views/partner_inherit.xml',
+        'views/purchase_inherit.xml',
+        'views/procurement_inherit.xml',
         'views/location.xml',
         'views/cost_area.xml',
         'views/investment.xml',

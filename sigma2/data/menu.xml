@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
-
         <!-- Menú de SIGMa 2 -->
         <menuitem id="menu_sigma2" name="Mantenimiento" sequence="0" />
 			<!-- Inicio -->
@@ -11,16 +10,17 @@
 			<menuitem id="menu_sigma2_warehouse" parent="menu_sigma2" name="Almacén" sequence="20" />
 				<menuitem id="menu_sigma2_warehouse_manufacturers" parent="menu_sigma2_warehouse" name="Fabricantes" action="manufacturer.manufacturer_list_action" sequence="10" />
 				<menuitem id="menu_sigma2_warehouse_categories" parent="menu_sigma2_warehouse" name="Familias" action="product.product_category_action_form" sequence="20" />
-				<menuitem id="menu_sigma2_warehouse_products" parent="menu_sigma2_warehouse" name="Productos" action="product.product_template_action" sequence="30" />
-				<menuitem id="menu_sigma2_warehouse_products_category" parent="menu_sigma2_warehouse" name="Productos por familia" action="product.product_category_action" sequence="30" />
-				<menuitem id="menu_sigma2_warehouse_procurements" parent="menu_sigma2_warehouse" name="Abastecimientos" action="procurement.procurement_exceptions" sequence="50" />
-				<menuitem id="menu_sigma2_warehouse_stock_inventory" parent="menu_sigma2_warehouse" name="Ajustes de inventario" action="stock.action_inventory_form" sequence="60" />
+				<menuitem id="menu_sigma2_warehouse_products" parent="menu_sigma2_warehouse" name="Productos" action="product_action" sequence="30" />
+				<menuitem id="menu_sigma2_warehouse_products_category" parent="menu_sigma2_warehouse" name="Productos por familia" action="product.product_category_action" sequence="40" />
+				<menuitem id="menu_sigma2_warehouse_stock_inventory" parent="menu_sigma2_warehouse" name="Ajustes de inventario" action="stock.action_inventory_form" sequence="50" />
 			<!-- Compras -->
 			<menuitem id="menu_sigma2_purchases" parent="menu_sigma2" name="Compras" sequence="30" />
-				<menuitem id="menu_sigma2_purchases_suppliers" parent="menu_sigma2_purchases" name="Proveedores" action="base.action_partner_supplier_form" sequence="10" />
-				<menuitem id="menu_sigma2_purchases_rfq" parent="menu_sigma2_purchases" name="Solicitudes de presupuesto" action="purchase.purchase_rfq" sequence="20" />
-				<menuitem id="menu_sigma2_purchases_purchase" parent="menu_sigma2_purchases" name="Pedidos de compra" action="purchase.purchase_form_action" sequence="30" />
-				<menuitem id="menu_sigma2_purchases_stock_receipt" parent="menu_sigma2_purchases" name="Productos a recibir" action="stock.action_receipt_picking_move" sequence="40" />
+                <menuitem id="menu_sigma2_purchases_suppliers" parent="menu_sigma2_purchases" name="Proveedores" action="partner_supplier_form_action" sequence="10" />
+                <menuitem id="menu_sigma2_purchases_contacts" parent="menu_sigma2_purchases" name="Contactos" action="partner_contact_form_action" sequence="20" />
+                <menuitem id="menu_sigma2_purchases_procurements" parent="menu_sigma2_purchases" name="Abastecimientos" action="procurement.procurement_exceptions" sequence="30" />
+				<menuitem id="menu_sigma2_purchases_rfq" parent="menu_sigma2_purchases" name="Presupuestos de compra" action="purchase.purchase_rfq" sequence="40" />
+				<menuitem id="menu_sigma2_purchases_purchase" parent="menu_sigma2_purchases" name="Pedidos de compra" action="purchase.purchase_form_action" sequence="50" />
+				<menuitem id="menu_sigma2_purchases_stock_receipt" parent="menu_sigma2_purchases" name="Productos a recibir" action="stock.action_receipt_picking_move" sequence="60" />
 
 			<!-- Máquinas -->
 			<menuitem id="menu_sigma2_assets" parent="menu_sigma2" name="Máquinas (Activos)" sequence="40" />

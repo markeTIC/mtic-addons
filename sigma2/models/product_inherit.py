@@ -20,10 +20,10 @@ class product_template(models.Model):
 
     barcode = fields.Char('Código de barras', required=True, select=True)
     atex = fields.Boolean('Atex')
-    category = fields.Many2one('product.category', 'Familia', related='categ_id')
 
     _defaults = {
         'barcode': lambda self,cr,uid,context={}: self.pool.get('ir.sequence').get(cr, uid, 'sigma2.product.barcode'),
+        'sale_ok': False,
     }
 
     _sql_constraints = [

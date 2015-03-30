@@ -10,6 +10,7 @@ from openerp import models, fields, api, _
 from datetime import date
 import logging
 import time
+from docutils.nodes import description
 
 _logger = logging.getLogger(__name__)
 
@@ -68,10 +69,11 @@ class sigma2_maintenance_order(models.Model):
     display_name = fields.Char('Orden de mantenimiento', compute='_compute_display_name', search='_search_display_name', readonly=True)
     worker_ids = fields.One2many('sigma2.maintenance.order.worker', 'maintenance_order_id', string='Trabajadores de la orden')
     part_ids = fields.One2many('sigma2.maintenance.order.part', 'maintenance_order_id', string='Recambios de la orden')
-    
     ## Campos para la vista
-    param_order_type_code = fields.Char('Código tipo de orden (parámetro para las vistas)', store=False, readonly=True)
-
+    # creamos un campo para pasar un parámetro que indique el tipo de orden a crear
+    param_order_type_code = fields.Char('Código tipo de orden (parámetro para las vistas)', store=False, readonly=True, search='_search_param_order_type_code')
+    # hacemos el campo create_date visible para poder usarlo en la vista, para ocultar pestañas en la creación del registro
+    create_date = fields.Date('Fecha creación', invisible=False, readonly=True,)
     ##
     
     _rec_name = 'display_name'
@@ -95,6 +97,16 @@ class sigma2_maintenance_order(models.Model):
     def _search_display_name(self, operator, value):
         return [('code', operator, value),]
 
+    def _search_param_order_type_code(self, operator, value):
+        # TODO: Corregir!
+        return [('code', operator, value),]
+    
+
+    @api.onchange('param_order_type_code')
+    def _param_order_type_code_onchange(self):
+        if self.param_order_type_code:
+            self.order_type_id = self.env.ref('sigma2.order_type_' + self.param_order_type_code)
+
     @api.onchange('order_type_id')
     def _order_type_id_onchange(self):
         if self.order_type_id and self.order_type_id.counter:
@@ -105,7 +117,7 @@ class sigma2_maintenance_order(models.Model):
         employees = self.env['res.users'].search([('id', '=', self.env.uid)])[0].employee_ids
         if len(employees) == 1:
             self.origin_employee_id = employees[0]
-        domain = {'origin_employee_id':[('user_id', '=', self.env.uid)]}
+        domain = {'origin_employee_id':[('user_id', '=', self.env.uid)], 'authorization_employee_id':[('user_id', '=', self.env.uid)]}
         return {'domain': domain}
 
     @api.one
@@ -134,6 +146,13 @@ class sigma2_maintenance_order(models.Model):
     def _end_date_onchange(self):
         if self.end_date:
             self.status = 'finished'
+            if not self.start_date:
+                self.start_date = self.end_date
+            if not self.repair_time:
+                total_time = 0
+                for worker in self.worker_ids:
+                    total_time = total_time + worker.work_time
+                self.repair_time = total_time
         
     @api.onchange('asset_level1')
     def _asset_level1_onchange(self):
@@ -182,13 +201,8 @@ class sigma2_maintenance_order(models.Model):
                 return {'warning':{'title':_('Atención!'), 'message': _('Debe indicar la máquina para poder calcular el tiempo de paro de producción')}}
         else:
             self.stop_time_rated = 0
+
             
-    @api.onchange('param_order_type_code')
-    def _param_order_type_code_onchange(self):
-        if self.param_order_type_code:
-            self.order_type_id = self.env.ref('sigma2.order_type_' + self.param_order_type_code)
-
-
 class sigma2_maintenance_order_worker(models.Model):
     """Trabajador de la orden de mantenimiento"""
 
@@ -203,9 +217,20 @@ class sigma2_maintenance_order_worker(models.Model):
 
     _defaults = {
         'active': True,
+        'start_date': fields.date.today(),
     }
 
     _order = 'start_date'
+
+    @api.onchange('active')
+    def _active_onchange(self):
+        # al iniciar la edición de la linea...
+        # establecemos el trabajador (y su filtro)
+        employees = self.env['res.users'].search([('id', '=', self.env.uid)])[0].employee_ids
+        if len(employees) == 1:
+            self.employee_id = employees[0]
+        domain = {'employee_id':[('user_id', '=', self.env.uid)]}
+        return {'domain': domain}
 
 
 class sigma2_maintenance_order_part(models.Model):
@@ -216,6 +241,7 @@ class sigma2_maintenance_order_part(models.Model):
     
     maintenance_order_id = fields.Many2one('sigma2.maintenance.order', 'Orden de mantenimiento', required=True, select=True, ondelete='cascade')
     product_id = fields.Many2one('product.product', 'Recambio', required=True, ondelete='restrict')
+    description = fields.Char('Descripción', required=True)
     qty = fields.Integer('Cantidad', required=True)
     active = fields.Boolean('Registro activo')
 
@@ -224,3 +250,6 @@ class sigma2_maintenance_order_part(models.Model):
         'qty': 1,
     }
 
+    @api.onchange('product_id')
+    def _product_id_onchange(self):
+        self.description = self.product_id.name

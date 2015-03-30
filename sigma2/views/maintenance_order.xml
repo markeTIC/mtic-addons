@@ -25,7 +25,10 @@
                     <field name="order_type_id"/>
                     <field name="code"/>
                     <field name="date"/>
-                    <field name="origin_department_id"/>
+                    <field name="asigned_employee_id"/>
+                    <field name="asset_id"/>
+                    <field name="origin_employee_id"/>
+                    <field name="work_shift"/>
                     <field name="status"/>
                 </tree>
             </field>
@@ -45,25 +48,26 @@
                             </h1>
                         </div>
                         <group colspan="4">
+                            <field name="param_order_type_code" invisible="1"/>
+                            <field name="create_date" invisible="1"/>
 	                        <group>
 	                            <field name="order_type_id" options="{'no_create': True}" attrs="{'invisible':[('param_order_type_code', '!=', False)]}"/>
-			                    <field name="code"/>
+			                    <field name="code" attrs="{'invisible':[('create_date', '!=', False)]}"/>
 	                            <field name="origin_employee_id" options="{'no_create': True}"/>
+                                <field name="origin_department_id" readonly="1"/>
 	                            <field name="asset_level1" options="{'no_create': True}"/>
 	                            <field name="asset_level2" options="{'no_create': True}"/>
 	                            <field name="asset_level3" options="{'no_create': True}"/>
 	                            <field name="status_date" invisible="1"/>
 	                            <field name="asset_id" invisible="1"/>
-	                            <field name="param_order_type_code" invisible="1"/>
 	                        </group>
 	                        <group>
 	                            <field name="date"/>
-	                            <field name="origin_department_id" readonly="1"/>
 	                            <field name="hour"/>
 	                            <field name="work_shift"/>
 	                            <field name="priority"/>
 	                            <field name="status"/>
-	                            <field name="status_note" attrs="{'invisible':[('status', '!=', 'canceled'), ('status', '!=', 'disposed')]}"/>
+	                            <field name="status_note" attrs="{'invisible':[('status', '!=', 'canceled'), ('status', '!=', 'rejected')]}"/>
 	                        </group>
                         </group>
                         <notebook>
@@ -72,24 +76,26 @@
 		                            <field name="description" nolabel="1" placeholder="Descripción del trabajo" />
 		                        </group>
                         	 </page>
-                        	 <page string="Trabajadores">
+                        	 <page string="Trabajadores" attrs="{'invisible':[('create_date', '=', False)]}">
 		                        <field name="worker_ids" nolabel="1">
 		                        	<tree editable="bottom">
+                                        <field name="active" invisible="1"/>
 		                        		<field name="employee_id" options="{'no_create': True}"/>
 		                        		<field name="start_date"/>
 		                        		<field name="work_time"/>
 		                        	</tree>
 		                        </field>
                         	 </page>
-                        	 <page string="Recambios">
+                        	 <page string="Recambios" attrs="{'invisible':[('create_date', '=', False)]}">
 		                        <field name="part_ids" nolabel="1">
 		                        	<tree editable="bottom">
 		                        		<field name="product_id" options="{'no_create': True}"/>
-		                        		<field name="qty"/>
+                                        <field name="description"/>
+                                        <field name="qty"/>
 		                        	</tree>
 		                        </field>
                         	 </page>
-                        	 <page string="Resultado">
+                        	 <page string="Resultado" attrs="{'invisible':[('create_date', '=', False)]}">
 		                        <group>
 		                            <field name="solution_description" nolabel="1" placeholder="Resultado del trabajo" />
 		                        </group>
@@ -105,7 +111,7 @@
 			                        </group>
 		                        </group>
                         	 </page>
-                        	 <page string="Notas">
+                        	 <page string="Notas" attrs="{'invisible':[('create_date', '=', False)]}">
 		                        <group>
 		                            <field name="notes" nolabel="1" placeholder="Notas" />
 		                        </group>

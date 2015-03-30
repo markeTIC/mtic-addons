@@ -1,27 +1,174 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-    
         <record id="product_template_form_view" model="ir.ui.view">
-            <field name="name">sigma2.product.template.form</field>
+            <field name="name">sigma2.product_template_form_view</field>
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="priority" eval="32" />
             <field name="arch" type="xml">
-                <field name="manufacturer_id" position="before">
-                   <group colspan="4">
-                    	<group>
-                    		<field name="atex"/>
-                    	</group>
-                    	<group>
-                    		<field name="barcode"/>
-                    	</group>
+                <data>
+                    <field name="manufacturer_id" position="before">
+                        <label for="categ_id" string="Familia"/>
+                        <div><field name="categ_id" colspan="3" nolabel="1"/></div>
+                    </field>
+                    <xpath expr="//page[@string='Information']/group" position="before">
+                       <group colspan="4">
+                            <group>
+                                <field name="atex"/>
+                            </group>
+                            <group>
+                                <field name="barcode"/>
+                            </group>
+                        </group>
+                    </xpath>
+                    <xpath expr="//page[@string='Accounting']/group" position="replace">
+                    </xpath>
+                    <xpath expr="//page[@string='Accounting']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//group[@string='Counter-Part Locations Properties']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//group[@string='Supply Chain Information']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                     <group name="status" position="replace">
                     </group>
-	               	<label for="category" string="Familia"/>
-	                <div><field name="category" colspan="3" nolabel="1"/></div>
-	            </field>
+                    <group name="weight" position="replace">
+                    </group>
+                    <group name="sale_condition" position="replace">
+                    </group>
+                 </data>
             </field>
         </record>
 
+        <record id="product_template_only_form_view" model="ir.ui.view">
+            <field name="name">sigma2.product_template_only_form_view</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="priority" eval="32" />
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//button[@name='action_open_quants']" position="replace">
+                    </xpath>
+                    <xpath expr="//button[@name='action_view_orderpoints']" position="replace">
+                    </xpath>
+                    <xpath expr="//button[@name='action_view_routes']" position="replace">
+                    </xpath>
+                    <xpath expr="//page[@name='variants']" position="replace">
+                    </xpath>
+                 </data>
+            </field>
+        </record>
+
+        <record id="product_form_view_procurement_button" model="ir.ui.view">
+            <field name="name">sigma2.product_form_view_procurement_button</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="stock.product_form_view_procurement_button"/>
+            <field name="priority" eval="32" />
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//button[@name='%(stock.product_open_quants)d']" position="replace">
+                    </xpath>
+                    <xpath expr="//button[@string='Reordering Rules']" position="replace">
+                    </xpath>
+                    <xpath expr="//button[@name='action_view_routes']" position="replace">
+                    </xpath>
+                 </data>
+            </field>
+        </record>
+
+        <record id="product_template_kanban_view" model="ir.ui.view">
+            <field name="name">sigma2.product_template_kanban_view</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_kanban_view"/>
+            <field name="priority" eval="32" />
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//a[@type='action']" position="replace">
+                    </xpath>
+                 </data>
+            </field>
+        </record>
+        
+        <record id="product_product_tree_view" model="ir.ui.view">
+            <field name="name">sigma2.product_product_tree_view</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="priority" eval="32" />
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//tree" position="attributes">
+                        <attribute name="string">Productos</attribute>
+                    </xpath>
+                    <field name="default_code" position="before">
+                        <field name="barcode"/>
+                    </field>
+                    <field name="attribute_value_ids" position="replace">
+                    </field>
+                    <field name="lst_price" position="replace">
+                    </field>
+                    <field name="ean13" position="replace">
+                    </field>
+                    <field name="uom_id" position="replace">
+                    </field>
+                    <field name="name" position="after">
+                        <field name="categ_id"/>
+                    </field>
+                </data>
+            </field>
+        </record>
+
+        <record id="product_search_form_view" model="ir.ui.view">
+            <field name="name">sigma2.product_search</field>
+            <field name="model">product.product</field>
+            <field name="mode">primary</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <field name="product_variant_ids" position="replace">
+                </field>
+                <field name="name" position="before">
+                   <field name="barcode"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="product_action" model="ir.actions.act_window">
+            <field name="name">Productos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+            <field name="context">{"search_default_filter_to_buy":1}</field>
+            <field name="search_view_id" ref="product_search_form_view"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click para crear un nuevo producto.
+              </p>
+            </field>
+        </record>
+
+        <record id="category_property_form_view" model="ir.ui.view">
+            <field name="name">sigma2.category_property_form_view</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="priority" eval="32" />
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//group[@name='account_property']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//group[@string='Logistics']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//group[@name='account_stock_property']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        
     </data>
 </openerp>
 

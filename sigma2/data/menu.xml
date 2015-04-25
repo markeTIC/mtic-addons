@@ -21,6 +21,9 @@
 				<menuitem id="menu_sigma2_purchases_rfq" parent="menu_sigma2_purchases" name="Presupuestos de compra" action="purchase.purchase_rfq" sequence="40" />
 				<menuitem id="menu_sigma2_purchases_purchase" parent="menu_sigma2_purchases" name="Pedidos de compra" action="purchase.purchase_form_action" sequence="50" />
 				<menuitem id="menu_sigma2_purchases_stock_receipt" parent="menu_sigma2_purchases" name="Productos a recibir" action="stock.action_receipt_picking_move" sequence="60" />
+                <menuitem id="menu_sigma2_purchases_picking_to_invoice" parent="menu_sigma2_purchases" name="Albaranes a facturar" action="purchase.action_picking_tree_picking_to_invoice" sequence="70" />
+                <menuitem id="menu_sigma2_purchases_picking" parent="menu_sigma2_purchases" name="Albaranes de compra" action="incoming_picking_action" sequence="80" />
+                <menuitem id="menu_sigma2_purchases_invoices" parent="menu_sigma2_purchases" name="Facturas de compra" action="account.action_invoice_tree2" sequence="90" />
 
 			<!-- Máquinas -->
 			<menuitem id="menu_sigma2_assets" parent="menu_sigma2" name="Máquinas (Activos)" sequence="40" />

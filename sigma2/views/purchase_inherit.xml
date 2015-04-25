@@ -15,6 +15,18 @@
             </field>
         </record>
 
+        <record id="incoming_picking_action" model="ir.actions.act_window">
+            <field name="name">Albaranes de compra</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain">[('picking_type_code', '=', 'incoming')]</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" eval="False"/> <!-- Force empty -->
+            <field name="view_id" eval="False"/> <!-- Force empty -->
+        </record>
+
     </data>
 </openerp>
 

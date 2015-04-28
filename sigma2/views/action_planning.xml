@@ -56,9 +56,26 @@
 	                            <field name="active"/>
 	                        </group>
                         </group>
-                        <group>
-                            <field name="notes" nolabel="1" placeholder="Notas" />
-                        </group>
+                        <notebook>
+                        	 <page string="Notas">
+		                        <group>
+		                            <field name="notes" nolabel="1" placeholder="Notas" />
+		                        </group>
+                        	 </page>
+                        	 <page string="Órdenes generadas">
+		                        <group>
+                                    <field name="maintenance_order_ids" nolabel="1">
+                                        <tree string="Órdenes generadas" default_order="date desc" colors="lightgrey:status == 'finished';red:status == 'canceled'">
+                                            <field name="date"/>
+                                            <field name="code"/>
+                                            <field name="status"/>
+                                            <field name="end_date"/>
+                                            <field name="repair_time"/>
+                                        </tree>
+                                    </field>
+		                        </group>
+                        	 </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>

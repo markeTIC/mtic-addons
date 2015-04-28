@@ -69,7 +69,8 @@ class sigma2_maintenance_order(models.Model):
     display_name = fields.Char('Orden de mantenimiento', compute='_compute_display_name', search='_search_display_name', readonly=True)
     worker_ids = fields.One2many('sigma2.maintenance.order.worker', 'maintenance_order_id', string='Trabajadores de la orden')
     part_ids = fields.One2many('sigma2.maintenance.order.part', 'maintenance_order_id', string='Recambios de la orden')
-    ## Campos para la vista
+    action_planning_id = fields.Many2one('sigma2.action.planning', 'Gama prev.', ondelete='restrict', readonly=True)
+    # Campos para la vista
     # creamos un campo para pasar un parámetro que indique el tipo de orden a crear
     param_order_type_code = fields.Char('Código tipo de orden (parámetro para las vistas)', store=False, readonly=True, search='_search_param_order_type_code')
     # hacemos el campo create_date visible para poder usarlo en la vista, para ocultar pestañas en la creación del registro
@@ -99,8 +100,7 @@ class sigma2_maintenance_order(models.Model):
 
     def _search_param_order_type_code(self, operator, value):
         # TODO: Corregir!
-        return [('code', operator, value),]
-    
+        return [('code', operator, value)]
 
     @api.onchange('param_order_type_code')
     def _param_order_type_code_onchange(self):

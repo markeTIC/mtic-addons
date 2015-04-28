@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'SIGMa 2',
-    'version': '1.0.40',
+    'version': '1.0.42',
     'category': 'Mantenimiento',
     'sequence': 1,
     'complexity': 'easy',
@@ -39,6 +39,7 @@ TODO:
         - usuario
         - manager
     - visualizacion de código de producto en tree
+    - hacer la fecha de inicio de las gamas obligatoria
     
     """,
     'data': [
@@ -62,6 +63,7 @@ TODO:
         'views/action_planning.xml',
         'views/maintenance_order.xml',
         'data/menu.xml',
+        'data/action_planning_cron.xml',
     ],
     'demo': [],
     'test': [],

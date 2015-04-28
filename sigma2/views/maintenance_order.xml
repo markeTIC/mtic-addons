@@ -68,6 +68,7 @@
 	                            <field name="priority"/>
 	                            <field name="status"/>
 	                            <field name="status_note" attrs="{'invisible':[('status', '!=', 'canceled'), ('status', '!=', 'rejected')]}"/>
+	                            <field name="action_planning_id" attrs="{'invisible':[('action_planning_id', '==', False)]}"/>
 	                        </group>
                         </group>
                         <notebook>

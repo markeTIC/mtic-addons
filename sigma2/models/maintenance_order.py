@@ -58,8 +58,8 @@ class sigma2_maintenance_order(models.Model):
     solution_description = fields.Text('Solución')
     asigned_employee_id = fields.Many2one('hr.employee', 'Asignada a', select=True, ondelete='restrict')
     planned_date = fields.Datetime('Fecha prevista')
-    start_date = fields.Datetime('Fecha inicio reparación')
-    end_date = fields.Datetime('Fecha fin reparación')
+    start_date = fields.Date('Fecha inicio reparación')
+    end_date = fields.Date('Fecha fin reparación')
     repair_time = fields.Integer('Tiempo reparación (minutos)')
     stop_time = fields.Integer('Tiempo paro máquina (minutos)')
     stop_time_rated = fields.Integer('Tiempo paro producción (minutos)')
@@ -69,7 +69,7 @@ class sigma2_maintenance_order(models.Model):
     display_name = fields.Char('Orden de mantenimiento', compute='_compute_display_name', search='_search_display_name', readonly=True)
     worker_ids = fields.One2many('sigma2.maintenance.order.worker', 'maintenance_order_id', string='Trabajadores de la orden')
     part_ids = fields.One2many('sigma2.maintenance.order.part', 'maintenance_order_id', string='Recambios de la orden')
-    action_planning_id = fields.Many2one('sigma2.action.planning', 'Gama prev.', ondelete='restrict', readonly=True)
+    action_planning_id = fields.Many2one('sigma2.action.planning', 'Gama preventivo', ondelete='restrict', readonly=True)
     # Campos para la vista
     # creamos un campo para pasar un parámetro que indique el tipo de orden a crear
     param_order_type_code = fields.Char('Código tipo de orden (parámetro para las vistas)', store=False, readonly=True, search='_search_param_order_type_code')

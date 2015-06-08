@@ -11,21 +11,20 @@
 			<field name="name">Código de productos para Sigma2</field>
 			<field name="code">sigma2.product.barcode</field>
 			<field name="padding" eval="5" />
-			<field name="number_next" eval="10000" />
 			<field name="prefix"></field>
 			<field name="suffix"></field>
 		</record>
  
 		<record forcecreate="1" id="prev_maintenance_order_id" model="ir.sequence">
 			<field name="name">Número de orden de mantenimiento preventivo para Sigma2</field>
-			<field name="padding" eval="5" />
+			<field name="padding" eval="4" />
 			<field name="prefix">P%(y)s/</field>
 			<field name="suffix"></field>
 		</record>
 
 		<record forcecreate="1" id="corr_maintenance_order_id" model="ir.sequence">
 			<field name="name">Número de orden de mantenimiento correctivo para Sigma2</field>
-			<field name="padding" eval="5" />
+			<field name="padding" eval="4" />
 			<field name="prefix">C%(y)s/</field>
 			<field name="suffix"></field>
 		</record>

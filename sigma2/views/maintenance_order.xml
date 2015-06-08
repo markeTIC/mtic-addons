@@ -34,6 +34,25 @@
             </field>
         </record>
 		
+        <record id="finished_maintenance_order_list_view" model="ir.ui.view">
+            <field name="name">Lista de órdenes de mantenimiento finalizadas</field>
+            <field name="model">sigma2.maintenance.order</field>
+            <field name="arch" type="xml">
+                <tree default_order="end_date desc" >
+                    <field name="order_type_id"/>
+                    <field name="code"/>
+                    <field name="date"/>
+                    <field name="asigned_employee_id"/>
+                    <field name="asset_id"/>
+                    <field name="origin_employee_id"/>
+                    <field name="work_shift"/>
+                    <field name="end_date" string="Fecha fin"/>
+                    <field name="repair_time" string="Tiempo rep."/>
+                    <field name="stop_time" string="Tiempo paro"/>
+                </tree>
+            </field>
+        </record>
+
 		<record id="maintenance_order_form_view" model="ir.ui.view">
             <field name="name">Formulario orden de mantenimiento</field>
             <field name="model">sigma2.maintenance.order</field>
@@ -108,7 +127,7 @@
 			                        <group>
 			                            <field name="repair_time"/>
 			                            <field name="stop_time"/>
-			                            <field name="stop_time_rated" groups="base.group_no_one"/>
+			                            <field name="stop_time_rated" groups="sigma2.manager_group"/>
 			                        </group>
 		                        </group>
                         	 </page>
@@ -124,7 +143,7 @@
 	                            <field name="planned_date"/>
 	                        </group>
 	                        <group>
-	                            <field name="authorization_employee_id" options="{'no_create': True}"/>
+	                            <field name="authorization_employee_id" style="background-color:light-yellow;" options="{'no_create': True}"/>
 	                        </group>
                         </group>
                     </sheet>
@@ -138,12 +157,23 @@
             <field name="arch" type="xml">
                 <search string="Orden de mantenimiento">
                     <field name="code"/>
+                    <field name="asset_level1"/>
+                    <field name="asset_id"/>
+                    <field name="origin_employee_id"/>
+                    <field name="origin_department_id"/>
+                    <field name="asigned_employee_id"/>
+                    <separator/>
                     <filter string="Pendientes" name="filter_pending" domain="[('status','=','pending')]"/>
                     <filter string="Planificadas" name="filter_planned" domain="[('status','=','planned')]"/>
                     <filter string="En curso" name="filter_open" domain="[('status','=','open')]"/>
                     <filter string="Finalizadas" name="filter_finished" domain="[('status','=','finished')]"/>
                     <filter string="Canceladas" name="filter_canceled" domain="[('status','=','canceled')]"/>
                     <filter string="Rechazadas" name="filter_disposed" domain="[('status','=','rejected')]"/>
+                    <separator />
+                    <filter string="Mis órdenes" name="filter_my_orders" domain="[('asigned_employee_id.user_id','=',uid)]"
+                            help="Órdenes que tengo asignadas"/>
+                    <filter string="Sin asignar" name="filter_unassigned" domain="[('asigned_employee_id','=', False)]"
+                            help="Órdenes sin asignar"/>
                     <separator />
                     <filter string="Preventivo" name="filter_preventive" domain="[('order_type_id.code','=','P')]"/>
                     <filter string="Correctivo" name="filter_corrective" domain="[('order_type_id.code','=','C')]"/>
@@ -160,6 +190,24 @@
             <field name="view_id" ref="maintenance_order_list_view"/>
             <field name="search_view_id" ref="maintenance_order_search_view"/>
             <field name="context">{'search_default_filter_preventive': 1, 'default_param_order_type_code': 'P'}</field>
+            <field name="limit">100</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para crear una orden de mantenimiento preventivo
+                </p>
+                <p>
+                    Las órdenes de preventivo se generan automáticamente a partir de las gamas de mantenimiento.
+                </p>
+            </field>
+        </record>
+
+        <record id="pend_prev_maintenance_order_list_action" model="ir.actions.act_window">
+            <field name="name">Órdenes preventivo pend.</field>
+            <field name="res_model">sigma2.maintenance.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="maintenance_order_list_view"/>
+            <field name="search_view_id" ref="maintenance_order_search_view"/>
+            <field name="context">{'search_default_filter_preventive': 1, 'search_default_filter_pending': 1, 'search_default_filter_planned': 1, 'search_default_filter_open': 1, 'default_param_order_type_code': 'P'}</field>
             <field name="limit">100</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
@@ -185,6 +233,78 @@
                 </p>
                 <p>
                     Las órdenes de correctivo se crean cuando surge una incidencia o avería en producción que requiere de la intervención de mantenimiento.
+                </p>
+            </field>
+        </record>
+
+        <record id="pend_corr_maintenance_order_list_action" model="ir.actions.act_window">
+            <field name="name">Órdenes correctivo pend.</field>
+            <field name="res_model">sigma2.maintenance.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="maintenance_order_list_view"/>
+            <field name="search_view_id" ref="maintenance_order_search_view"/>
+            <field name="context">{'search_default_filter_corrective': 1, 'search_default_filter_pending': 1, 'search_default_filter_planned': 1, 'search_default_filter_open': 1, 'default_param_order_type_code': 'C'}</field>
+            <field name="limit">100</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para crear una orden de mantenimiento correctivo
+                </p>
+                <p>
+                    Las órdenes de correctivo se crean cuando surge una incidencia o avería en producción que requiere de la intervención de mantenimiento.
+                </p>
+            </field>
+        </record>
+
+        <record id="finished_maintenance_order_list_action" model="ir.actions.act_window">
+            <field name="name">Órdenes realizadas</field>
+            <field name="res_model">sigma2.maintenance.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="finished_maintenance_order_list_view"/>
+            <field name="search_view_id" ref="maintenance_order_search_view"/>
+            <field name="context">{'search_default_filter_corrective': 1, 'search_default_filter_improvement': 1, 'search_default_filter_finished': 1, 'default_param_order_type_code': 'C'}</field>
+            <field name="limit">100</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para crear una orden de mantenimiento correctivo
+                </p>
+                <p>
+                    Las órdenes de correctivo se crean cuando surge una incidencia o avería en producción que requiere de la intervención de mantenimiento.
+                </p>
+            </field>
+        </record>
+
+        <record id="improv_maintenance_order_list_action" model="ir.actions.act_window">
+            <field name="name">Propuestas de mejora</field>
+            <field name="res_model">sigma2.maintenance.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="maintenance_order_list_view"/>
+            <field name="search_view_id" ref="maintenance_order_search_view"/>
+            <field name="context">{'search_default_filter_improvement': 1, 'default_param_order_type_code': 'M'}</field>
+            <field name="limit">100</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para crear una propuesta de mejora
+                </p>
+                <p>
+                    Las propuestas de mejora se crean cuando se detecta un punto de mejora en la producción, la máquina, la seguridad o de cualquier otro tipo que se desee canalizar a través de mantenimiento.
+                </p>
+            </field>
+        </record>
+
+        <record id="pend_improv_maintenance_order_list_action" model="ir.actions.act_window">
+            <field name="name">Propuestas mejora pend.</field>
+            <field name="res_model">sigma2.maintenance.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="maintenance_order_list_view"/>
+            <field name="search_view_id" ref="maintenance_order_search_view"/>
+            <field name="context">{'search_default_filter_improvement': 1, 'search_default_filter_pending': 1, 'search_default_filter_planned': 1, 'search_default_filter_open': 1, 'default_param_order_type_code': 'M'}</field>
+            <field name="limit">100</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click para crear una propuesta de mejora
+                </p>
+                <p>
+                    Las propuestas de mejora se crean cuando se detecta un punto de mejora en la producción, la máquina, la seguridad o de cualquier otro tipo que se desee canalizar a través de mantenimiento.
                 </p>
             </field>
         </record>

@@ -2,60 +2,106 @@
 <openerp>
     <data>
         <!-- Menú de SIGMa 2 -->
-        <menuitem id="menu_sigma2" name="Mantenimiento" sequence="0" />
-			<!-- Inicio -->
-			<menuitem id="menu_sigma2_start" parent="menu_sigma2" name="Inicio" sequence="10" />
-				<menuitem id="menu_sigma2_start_notes" parent="menu_sigma2_start" name="Notas" action="note.action_note_note" sequence="10" />
-			<!-- Almacén -->
-			<menuitem id="menu_sigma2_warehouse" parent="menu_sigma2" name="Almacén" sequence="20" />
-				<menuitem id="menu_sigma2_warehouse_manufacturers" parent="menu_sigma2_warehouse" name="Fabricantes" action="manufacturer.manufacturer_list_action" sequence="10" />
-				<menuitem id="menu_sigma2_warehouse_categories" parent="menu_sigma2_warehouse" name="Familias" action="product.product_category_action_form" sequence="20" />
-				<menuitem id="menu_sigma2_warehouse_products" parent="menu_sigma2_warehouse" name="Productos" action="product_action" sequence="30" />
-				<menuitem id="menu_sigma2_warehouse_products_category" parent="menu_sigma2_warehouse" name="Productos por familia" action="product.product_category_action" sequence="40" />
-				<menuitem id="menu_sigma2_warehouse_stock_inventory" parent="menu_sigma2_warehouse" name="Ajustes de inventario" action="stock.action_inventory_form" sequence="50" />
-			<!-- Compras -->
-			<menuitem id="menu_sigma2_purchases" parent="menu_sigma2" name="Compras" sequence="30" />
-                <menuitem id="menu_sigma2_purchases_suppliers" parent="menu_sigma2_purchases" name="Proveedores" action="partner_supplier_form_action" sequence="10" />
-                <menuitem id="menu_sigma2_purchases_contacts" parent="menu_sigma2_purchases" name="Contactos" action="partner_contact_form_action" sequence="20" />
-                <menuitem id="menu_sigma2_purchases_procurements" parent="menu_sigma2_purchases" name="Abastecimientos" action="procurement.procurement_exceptions" sequence="30" />
-				<menuitem id="menu_sigma2_purchases_rfq" parent="menu_sigma2_purchases" name="Presupuestos de compra" action="purchase.purchase_rfq" sequence="40" />
-				<menuitem id="menu_sigma2_purchases_purchase" parent="menu_sigma2_purchases" name="Pedidos de compra" action="purchase.purchase_form_action" sequence="50" />
-				<menuitem id="menu_sigma2_purchases_stock_receipt" parent="menu_sigma2_purchases" name="Productos a recibir" action="stock.action_receipt_picking_move" sequence="60" />
-                <menuitem id="menu_sigma2_purchases_picking_to_invoice" parent="menu_sigma2_purchases" name="Albaranes a facturar" action="purchase.action_picking_tree_picking_to_invoice" sequence="70" />
-                <menuitem id="menu_sigma2_purchases_picking" parent="menu_sigma2_purchases" name="Albaranes de compra" action="incoming_picking_action" sequence="80" />
-                <menuitem id="menu_sigma2_purchases_invoices" parent="menu_sigma2_purchases" name="Facturas de compra" action="account.action_invoice_tree2" sequence="90" />
+        <!--menuitem id="menu_sigma2" name="Mantenimiento" groups="sigma2.production_group" sequence="0" / -->
+        <!-- Inicio -->
+        <menuitem id="menu_sigma2_start_root" name="Inicio" groups="sigma2.user_group" sequence="1" />
+            <menuitem id="menu_sigma2_start" parent="menu_sigma2_start_root" name="Inicio" groups="sigma2.user_group" sequence="1" />
+                <menuitem id="menu_sigma2_start_dashboard" parent="menu_sigma2_start" name="Mi tablero" action="board.open_board_my_dash_action" sequence="10" />
+                <menuitem id="menu_sigma2_start_notes" parent="menu_sigma2_start" name="Notas" action="note.action_note_note" sequence="20" />
 
-			<!-- Máquinas -->
-			<menuitem id="menu_sigma2_assets" parent="menu_sigma2" name="Máquinas (Activos)" sequence="40" />
-				<menuitem id="menu_sigma2_assets_clases_activos" parent="menu_sigma2_assets" name="Clases" action="asset_class_list_action" sequence="10" />
-				<menuitem id="menu_sigma2_assets_tipos_activos" parent="menu_sigma2_assets" name="Tipos" action="asset_type_list_action" sequence="20" />
-				<menuitem id="menu_sigma2_assets_activos" parent="menu_sigma2_assets" name="Activos" action="asset_list_action" sequence="30" />
-				<menuitem id="menu_sigma2_assets_lines" parent="menu_sigma2_assets" name="Líneas" action="asset_lines_list_action" sequence="40" />
-				<menuitem id="menu_sigma2_assets_machines" parent="menu_sigma2_assets" name="Máquinas" action="asset_machines_list_action" sequence="50" />
+        <!-- Almacén -->
+        <menuitem id="menu_sigma2_warehouse_root" name="Almacén" groups="sigma2.user_group" sequence="2" />
+            <menuitem id="menu_sigma2_warehouse" parent="menu_sigma2_warehouse_root" name="Almacén" groups="sigma2.user_group" sequence="2" />
+                <menuitem id="menu_sigma2_warehouse_manufacturers" parent="menu_sigma2_warehouse" name="Fabricantes" action="manufacturer.manufacturer_list_action" groups="sigma2.manager_group" sequence="10" />
+                <menuitem id="menu_sigma2_warehouse_categories" parent="menu_sigma2_warehouse" name="Familias" action="product.product_category_action_form" groups="sigma2.manager_group" sequence="20" />
+                <menuitem id="menu_sigma2_warehouse_products" parent="menu_sigma2_warehouse" name="Productos" action="product_action" groups="sigma2.user_group" sequence="30" />
+                <menuitem id="menu_sigma2_warehouse_products_category" parent="menu_sigma2_warehouse" name="Productos por familia" action="product.product_category_action" groups="sigma2.user_group" sequence="40" />
+                <menuitem id="menu_sigma2_warehouse_stock_inventory" parent="menu_sigma2_warehouse" name="Ajustes de inventario" action="stock.action_inventory_form" groups="sigma2.user_group" sequence="50" />
+                <menuitem id="menu_sigma2_purchases_procurements" parent="menu_sigma2_warehouse" name="Abastecimientos" action="procurement.procurement_exceptions" groups="sigma2.user_group" sequence="60" />
+                <menuitem id="menu_sigma2_purchases_stock_receipt" parent="menu_sigma2_warehouse" name="Productos a recibir" action="stock.action_receipt_picking_move" groups="sigma2.user_group" sequence="70" />
 
-			<!-- Preventivo -->
-			<menuitem id="menu_sigma2_preventive" parent="menu_sigma2" name="Preventivo" sequence="50" />
-				<menuitem id="menu_sigma2_preventive_precedures" parent="menu_sigma2_preventive" name="Procedimientos" action="procedure_list_action" sequence="10" />
-				<menuitem id="menu_sigma2_preventive_action_planning" parent="menu_sigma2_preventive" name="Gamas de preventivo" action="action_planning_list_action" sequence="20" />
-				<menuitem id="menu_sigma2_preventive_maintenance_order" parent="menu_sigma2_preventive" name="Órdenes de preventivo" action="prev_maintenance_order_list_action" sequence="30" />
+        <!-- Compras -->
+        <menuitem id="menu_sigma2_purchases_root" name="Compras" groups="sigma2.user_group" sequence="3" />
+            <menuitem id="menu_sigma2_purchases" parent="menu_sigma2_purchases_root" name="Compras" groups="sigma2.user_group" sequence="3" />
+                <menuitem id="menu_sigma2_purchases_suppliers" parent="menu_sigma2_purchases" name="Proveedores" action="partner_supplier_form_action" groups="sigma2.manager_group" sequence="10" />
+                <menuitem id="menu_sigma2_purchases_contacts" parent="menu_sigma2_purchases" name="Contactos" action="partner_contact_form_action" groups="sigma2.manager_group" sequence="20" />
+                <menuitem id="menu_sigma2_purchases_rfq" parent="menu_sigma2_purchases" name="Presupuestos de compra" action="purchase.purchase_rfq" groups="sigma2.manager_group" sequence="30" />
+                <menuitem id="menu_sigma2_purchases_purchase" parent="menu_sigma2_purchases" name="Pedidos de compra" action="purchase.purchase_form_action" groups="sigma2.manager_group" sequence="40" />
+                <menuitem id="menu_sigma2_purchases_picking_to_invoice" parent="menu_sigma2_purchases" name="Albaranes a facturar" action="purchase.action_picking_tree_picking_to_invoice" groups="sigma2.manager_group" sequence="50" />
+                <menuitem id="menu_sigma2_purchases_picking" parent="menu_sigma2_purchases" name="Albaranes de compra" action="incoming_picking_action" groups="sigma2.manager_group" sequence="60" />
+                <menuitem id="menu_sigma2_purchases_invoices" parent="menu_sigma2_purchases" name="Facturas de compra" action="account.action_invoice_tree2" groups="sigma2.manager_group" sequence="70" />
 
-			<!-- Correctivo -->
-			<menuitem id="menu_sigma2_corrective" parent="menu_sigma2" name="Correctivo" sequence="60" />
-				<menuitem id="menu_sigma2_corrective_maintenance_order" parent="menu_sigma2_corrective" name="Órdenes de correctivo" action="corr_maintenance_order_list_action" sequence="10" />
-				<menuitem id="menu_sigma2_maintenance_order" parent="menu_sigma2_corrective" name="Órdenes de mantenimiento" action="maintenance_order_list_action" sequence="20" />
+        <!-- Mantenimiento -->
+        <menuitem id="menu_sigma2" name="Mantenimiento" groups="sigma2.production_group" sequence="4" />
 
-			<!-- Personal -->
-			<menuitem id="menu_sigma2_people" parent="menu_sigma2" name="Personal" sequence="70" />
-				<menuitem id="menu_sigma2_people_department" parent="menu_sigma2_people" name="Departamentos" action="hr.open_module_tree_department" sequence="10" />
-				<menuitem id="menu_sigma2_people_employee" parent="menu_sigma2_people" name="Trabajadores" action="hr.open_view_employee_list_my" sequence="20" />
+            <!-- Máquinas -->
+            <menuitem id="menu_sigma2_assets" parent="menu_sigma2" name="Máquinas (Activos)" groups="sigma2.user_group" sequence="40" />
+                <menuitem id="menu_sigma2_assets_clases_activos" parent="menu_sigma2_assets" name="Clases" action="asset_class_list_action" groups="sigma2.manager_group" sequence="10" />
+                <menuitem id="menu_sigma2_assets_tipos_activos" parent="menu_sigma2_assets" name="Tipos" action="asset_type_list_action" groups="sigma2.manager_group" sequence="20" />
+                <menuitem id="menu_sigma2_assets_activos" parent="menu_sigma2_assets" name="Activos" action="asset_list_action" groups="sigma2.user_group" sequence="30" />
+                <menuitem id="menu_sigma2_assets_lines" parent="menu_sigma2_assets" name="Líneas" action="asset_lines_list_action" groups="sigma2.user_group" sequence="40" />
+                <menuitem id="menu_sigma2_assets_machines" parent="menu_sigma2_assets" name="Máquinas" action="asset_machines_list_action" groups="sigma2.user_group" sequence="50" />
 
-			<!-- Otros maestros -->
-			<menuitem id="menu_sigma2_master" parent="menu_sigma2" name="Otros maestros" sequence="100" />
-				<menuitem id="menu_sigma2_master_cost_areas" parent="menu_sigma2_master" name="Áreas de coste" action="cost_area_list_action" sequence="10" />
-				<menuitem id="menu_sigma2_master_investments" parent="menu_sigma2_master" name="Inversiones" action="investment_list_action" sequence="20" />
-				<menuitem id="menu_sigma2_master_locations" parent="menu_sigma2_master" name="Zonas de fábrica" action="location_list_action" sequence="30" />
-				<menuitem id="menu_sigma2_master_specialities" parent="menu_sigma2_master" name="Especialidades" action="speciality_list_action" sequence="40" />
-				<menuitem id="menu_sigma2_master_order_types" parent="menu_sigma2_master" name="Tipos de órdenes" action="order_type_list_action" sequence="50" />
+            <!-- Preventivo -->
+            <menuitem id="menu_sigma2_preventive" parent="menu_sigma2" name="Preventivo" groups="sigma2.user_group" sequence="50" />
+                <menuitem id="menu_sigma2_preventive_precedures" parent="menu_sigma2_preventive" name="Procedimientos" action="procedure_list_action" groups="sigma2.manager_group" sequence="10" />
+                <menuitem id="menu_sigma2_preventive_action_planning" parent="menu_sigma2_preventive" name="Gamas de preventivo" action="action_planning_list_action" groups="sigma2.manager_group" sequence="20" />
+                <menuitem id="menu_sigma2_preventive_maintenance_order" parent="menu_sigma2_preventive" name="Órdenes de preventivo" action="prev_maintenance_order_list_action" groups="sigma2.user_group" sequence="30" />
+                <menuitem id="menu_sigma2_pending_preventive_maintenance_order" parent="menu_sigma2_preventive" name="Órdenes preventivo pend." action="pend_prev_maintenance_order_list_action" groups="sigma2.user_group" sequence="40" />
+
+            <!-- Correctivo -->
+            <menuitem id="menu_sigma2_corrective" parent="menu_sigma2" name="Órdenes de mantenimiento" groups="sigma2.production_group" sequence="60" />
+                <menuitem id="menu_sigma2_corrective_maintenance_order" parent="menu_sigma2_corrective" name="Órdenes de correctivo" action="corr_maintenance_order_list_action" groups="sigma2.production_group" sequence="10" />
+                <menuitem id="menu_sigma2_pending_corrective_maintenance_order" parent="menu_sigma2_corrective" name="Órdenes correctivo pend." action="pend_corr_maintenance_order_list_action" groups="sigma2.production_group" sequence="20" />
+                <menuitem id="menu_sigma2_completed_corrective_maintenance_order" parent="menu_sigma2_corrective" name="Órdenes realizadas" action="finished_maintenance_order_list_action" groups="sigma2.production_group" sequence="20" />
+                <menuitem id="menu_sigma2_maintenance_order" parent="menu_sigma2_corrective" name="Órdenes de mantenimiento" action="maintenance_order_list_action" groups="sigma2.admin_group" sequence="30" />
+
+            <!-- Mejora -->
+            <menuitem id="menu_sigma2_improvement" parent="menu_sigma2" name="Propuestas de mejora" groups="sigma2.production_group" sequence="70" />
+                <menuitem id="menu_sigma2_improvement_order" parent="menu_sigma2_improvement" name="Propuestas de mejora" action="improv_maintenance_order_list_action" groups="sigma2.production_group" sequence="10" />
+                <menuitem id="menu_sigma2_pending_improvement_order" parent="menu_sigma2_improvement" name="Propuestas mejora pend." action="pend_improv_maintenance_order_list_action" groups="sigma2.production_group" sequence="20" />
+
+            <!-- Personal -->
+            <menuitem id="menu_sigma2_people" parent="menu_sigma2" name="Personal" groups="sigma2.manager_group" sequence="80" />
+                <menuitem id="menu_sigma2_people_department" parent="menu_sigma2_people" name="Departamentos" action="hr.open_module_tree_department" sequence="10" />
+                <menuitem id="menu_sigma2_people_employee" parent="menu_sigma2_people" name="Trabajadores" action="hr.open_view_employee_list_my" sequence="20" />
+
+            <!-- Otros maestros -->
+            <menuitem id="menu_sigma2_master" parent="menu_sigma2" name="Otros maestros" groups="sigma2.manager_group" sequence="100" />
+                <menuitem id="menu_sigma2_master_cost_areas" parent="menu_sigma2_master" name="Áreas de coste" action="cost_area_list_action" sequence="10" />
+                <menuitem id="menu_sigma2_master_investments" parent="menu_sigma2_master" name="Inversiones" action="investment_list_action" sequence="20" />
+                <menuitem id="menu_sigma2_master_locations" parent="menu_sigma2_master" name="Zonas de fábrica" action="location_list_action" sequence="30" />
+                <menuitem id="menu_sigma2_master_specialities" parent="menu_sigma2_master" name="Especialidades" action="speciality_list_action" sequence="40" />
+                <menuitem id="menu_sigma2_master_order_types" parent="menu_sigma2_master" name="Tipos de órdenes" action="order_type_list_action" sequence="50" />
+
+        <!-- Ocultamos los menús estándard de Odoo (en función de los módulos instalados)-->
+        <record id="mail.mail_feeds_main" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6,0,[ref('sigma2.admin_group'),])]"/>
+        </record>
+        <record id="base.menu_base_partner" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6,0,[ref('sigma2.admin_group'),])]"/>
+        </record>
+        <record id="base.menu_reporting" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6,0,[ref('sigma2.admin_group'),])]"/>
+        </record>
+        <!-- record id="base.menu_administration" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6,0,[ref('sigma2.admin_group'),])]"/>
+        </record -->
+        <record id="account.menu_finance" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6,0,[ref('sigma2.admin_group'),])]"/>
+        </record>
+        <record id="stock.menu_stock_root" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6,0,[ref('sigma2.admin_group'),])]"/>
+        </record>
+        <record id="base.menu_purchase_root" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6,0,[ref('sigma2.admin_group'),])]"/>
+        </record>
+        <record id="knowledge.menu_document" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6,0,[ref('sigma2.admin_group'),])]"/>
+        </record>
+        <record id="hr.menu_hr_root" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6,0,[ref('sigma2.admin_group'),])]"/>
+        </record>
 
     </data>
 </openerp>

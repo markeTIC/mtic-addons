@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'SIGMa 2',
-    'version': '1.0.42',
+    'version': '1.0.45',
     'category': 'Mantenimiento',
     'sequence': 1,
     'complexity': 'easy',
@@ -34,16 +34,9 @@ SIGMa 2  -  Sistema Integral de Gestión de Mantenimiento
 =========================================================
 Aplicación de gestión de mantenimiento preventivo, correctivo y gestión del almacén de recambios.
 
-TODO:
-    - crear grupos de permisos para mantenimiento:
-        - usuario
-        - manager
-    - visualizacion de código de producto en tree
-    - hacer la fecha de inicio de las gamas obligatoria
-    
     """,
     'data': [
-        'security/sigma2_security.xml',
+        'security/security.xml',
         'security/ir.model.access.csv',
         'data/sequences.xml',
         'data/order_type.xml',

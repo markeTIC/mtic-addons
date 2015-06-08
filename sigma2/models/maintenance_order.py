@@ -229,8 +229,8 @@ class sigma2_maintenance_order_worker(models.Model):
         employees = self.env['res.users'].search([('id', '=', self.env.uid)])[0].employee_ids
         if len(employees) == 1:
             self.employee_id = employees[0]
-        domain = {'employee_id':[('user_id', '=', self.env.uid)]}
-        return {'domain': domain}
+#        domain = {'employee_id':[('user_id', '=', self.env.uid)]}
+#        return {'domain': domain}
 
 
 class sigma2_maintenance_order_part(models.Model):

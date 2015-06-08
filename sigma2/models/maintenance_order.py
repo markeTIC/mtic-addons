@@ -117,8 +117,8 @@ class sigma2_maintenance_order(models.Model):
         employees = self.env['res.users'].search([('id', '=', self.env.uid)])[0].employee_ids
         if len(employees) == 1:
             self.origin_employee_id = employees[0]
-        domain = {'origin_employee_id':[('user_id', '=', self.env.uid)], 'authorization_employee_id':[('user_id', '=', self.env.uid)]}
-        return {'domain': domain}
+#        domain = {'origin_employee_id': [('user_id', '=', self.env.uid)], 'asigned_employee_id': [('user_id', '=', self.env.uid)]}
+#        return {'domain': domain}
 
     @api.one
     @api.depends('origin_employee_id')

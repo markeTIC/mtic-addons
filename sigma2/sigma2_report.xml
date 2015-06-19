@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report 
+            id="action_report_preventive_list"
+            model="sigma2.maintenance.order"
+            string="Listado de órdenes de preventivo"
+            name="sigma2.report_preventive_list"
+            file="sigma2.report_preventive_list"
+            report_type="qweb-pdf"
+            attachment_use="False"
+            menu="False"
+        />
+
+        <record id="action_report_preventive_list" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="report.paperformat_euro"/>
+        </record>
+
+        <report id="product.report_product_label"
+                model="product.product"
+                name="product.product.label"
+                string="Products Labels"
+                xml="sigma2/report/product_label.xml"
+                xsl="sigma2/report/product_label.xsl"/>
+
+    </data>
+</openerp>

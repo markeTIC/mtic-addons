@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record id="confirmation_competition" model="email.template">
+        <field name="name">Confirmación de competición</field>
+        <field name="model_id" ref="competition.model_competition_registration"/>
+        <field name="email_from" >${(object.user_id.email or object.company_id.email or 'noreply@' + object.company_id.name + '.com')|safe}</field>
+        <field name="email_to" >${object.email|safe}</field>
+        <field name="subject">Su inscripción a ${object.competition_id.name}</field>
+        <field name="body_html"><![CDATA[
+        <p>Hola ${object.name},</p>
+        <p>La competición ${object.competition_id.name} a la que se ha inscrito está confirmada y se celebrará del ${object.competition_id.date_begin_located.strftime('%Y-%m-%d %H:%M:%S (%Z)')} al ${object.competition_id.date_end_located.strftime('%Y-%m-%d %H:%M:%S (%Z)')}.
+        Para recibir más información no dude en visitar nuestra web o consultarnos si necesita alguna aclaración.</p>
+        <p>¡Gracias por su participación!</p>
+        <p>Saludos cordiales</p>]]></field>
+        </record>
+
+        <record id="confirmation_registration" model="email.template">
+        <field name="name">Confirmación de inscripción</field>
+        <field name="model_id" ref="competition.model_competition_registration"/>
+        <field name="email_from" >${(object.user_id.email or object.company_id.email or 'noreply@' + object.company_id.name + '.com')|safe}</field>
+        <field name="email_to" >${object.email|safe}</field>
+        <field name="subject">Su inscripción a ${object.competition_id.name}</field>
+        <field name="body_html"><![CDATA[
+        <p>Hola ${object.name},</p>
+        <p>Le confirmamos que su inscripción a ${object.competition_id.name} ha sido recibida.
+        Recibirá un mensaje con más información tan pronto como la competición haya sido confirmada.</p>
+        <p>¡Gracias por su participación!</p>
+        <p>Saludos cordiales</p>]]></field>
+        </record>
+
+        <!-- Default Values -->
+        <record model="ir.values" id="default_value_competition_mail_confirmation">
+            <field name="name">default_email_competition</field>
+            <field name="key">default</field>
+            <field name="key2"></field>
+            <field eval="ref('confirmation_competition')" name="value_unpickle"/>
+            <field name="model">competition.competition</field>
+        </record>
+
+        <record model="ir.values" id="default_value_registration_mail_confirmation">
+            <field name="name">default_email_registration</field>
+            <field name="key">default</field>
+            <field name="key2"></field>
+            <field eval="ref('confirmation_registration')" name="value_unpickle"/>
+            <field name="model">competition.competition</field>
+        </record>
+
+    </data>
+</openerp>

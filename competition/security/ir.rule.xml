@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!-- record id="maintenance_order_delete_cancelled_only" model="ir.rule">
+            <field name="name">Orden mantenimiento: solo se puede borrar si estado es cancelada</field>
+            <field name="model_id" ref="sigma2.model_sigma2_maintenance_order"/>
+            <field name="global" eval="1"/>
+            <field name="domain_force">[('status','=','canceled')]</field>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_read" eval="0"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_unlink" eval="1" />
+        </record -->
+
+    </data>
+</openerp>

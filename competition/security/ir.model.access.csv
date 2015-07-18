@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+competition_type_employee,Competition Type - Employee,model_competition_type,base.group_user,1,0,0,0
+competition_type_admin,Competition Type - Admin,model_competition_type,competition.admin_group,1,1,1,1
+competition_competition_employee,Competition - Employee,model_competition_competition,base.group_user,1,0,0,0
+competition_competition_manager,Competition - Manager,model_competition_competition,competition.manager_group,1,1,0,0
+competition_competition_admin,Competition - Admin,model_competition_competition,competition.admin_group,1,1,1,1
+competition_edition_employee,Competition Edition - Employee,model_competition_edition,base.group_user,1,0,0,0
+competition_edition_manager,Competition Edition - Manager,model_competition_edition,competition.manager_group,1,1,1,1
+competition_registration_employee,Competition Registration - Employee,model_competition_registration,base.group_user,1,0,0,0
+competition_registration_manager,Competition Registration - Manager,model_competition_registration,competition.manager_group,1,1,1,1

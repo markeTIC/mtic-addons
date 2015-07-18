@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+competition_type_public,Competition Type - Public,competition.model_competition_type,base.group_public,1,0,0,0
+competition_edition_public,Competition Edition - Public,model_competition_edition,base.group_public,1,0,0,0
+competition_edition_portal,Competition Edition - Portal,model_competition_edition,base.group_portal,1,0,0,0

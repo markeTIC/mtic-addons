@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <template id="assets_backend" name="competition assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/competition/static/src/css/competition.css"/>
+            </xpath>
+        </template>
+
+        <!-- Competition views -->
+        <record id="competition_list_action" model="ir.actions.act_window">
+            <field name="name">Competiciones</field>
+            <field name="res_model">competition.competition</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Pulse para crear una nueva competición.
+                </p>
+                <p>
+                    Mantenimiento de competiciones.
+                </p>
+            </field>
+        </record>
+
+        <record id="competition_list_view" model="ir.ui.view">
+            <field name="name">Lista de competiciones</field>
+            <field name="model">competition.competition</field>
+            <field name="arch" type="xml">
+                <tree string="Lista de competiciones">
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="state"/>
+                    <field name="message_unread" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+		
+		<record id="competition_form_view" model="ir.ui.view">
+            <field name="name">Formulario competición</field>
+            <field name="model">competition.competition</field>
+            <field name="arch" type="xml">
+                <form string="Competición">
+                    <header>
+                        <button string="Abrir competición" name="button_open" states="draft" type="object" class="oe_highlight" groups="competition.admin_group"/>
+                        <button string="Cerrar competición" name="button_close" states="open" type="object" class="oe_highlight" groups="competition.admin_group"/>
+                        <button string="Pasar a borrador" name="button_draft" states="cancel,close" type="object" groups="competition.admin_group"/>
+                        <button string="Cancelar competición" name="button_cancel" states="draft,open" type="object" groups="competition.admin_group"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,open,close"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_right oe_button_box">
+                        </div>
+                        <div class="oe_title" style="width: 75%%">
+                            <h1>
+                                <field name="name" placeholder="Nombre competición"/>
+                            </h1>
+                        </div>
+                        <group colspan="4">
+	                        <group>
+	                            <field name="type"/>
+	                            <field name="default_registration_type"/>
+	                            <field name="default_reply_to"/>
+	                            <field name="default_seats_min"/>
+	                            <field name="default_seats_max"/>
+	                        </group>
+	                        <group>
+	                            <field name="organizer_id"/>
+	                            <field name="default_email_competition" domain="[('model_id.model','=','competition.registration')]"/>
+	                            <field name="default_email_registration" domain="[('model_id.model','=','competition.registration')]"/>
+	                            <field name="active"/>
+	                        </group>
+                        </group>
+                        <notebook>
+                            <page string="Descripción">
+                                <group>
+                                    <field name="description" nolabel="1" placeholder="Descripción de la competición" />
+                                </group>
+                            </page>
+                            <page string="Ediciones">
+                                <field name="edition_ids" context="{'default_competition_id': active_id}"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <menuitem name="Competiciones" id="competition" action="competition_list_action" parent="competitions"/>
+
+    </data>
+</openerp>
+

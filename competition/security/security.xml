@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data noupdate="0">
+
+        <record model="ir.module.category" id="module_category_competition">
+            <field name="name">Gestión de competiciones</field>
+            <field name="description">Gestión de competiciones</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="user_group" model="res.groups">
+            <field name="name">Participante</field>
+            <field name="comment">Participante en competiciones</field>
+            <field name="category_id" ref="module_category_competition"/>
+        </record>
+
+        <record id="team_admin_group" model="res.groups">
+            <field name="name">Administrador equipo</field>
+            <field name="comment">Administrador de un equipo de competición</field>
+            <field name="category_id" ref="module_category_competition"/>
+            <field name="implied_ids" eval="[(6, 0, [ref('user_group')])]"/>
+        </record>
+
+        <record id="manager_group" model="res.groups">
+            <field name="name">Gestor competiciones</field>
+            <field name="comment">Gestor de competiciones</field>
+            <field name="category_id" ref="module_category_competition"/>
+            <field name="implied_ids" eval="[(6, 0, [ref('team_admin_group')])]"/>
+        </record>
+
+        <record id="admin_group" model="res.groups">
+            <field name="name">Administrador competiciones</field>
+            <field name="comment">Administrador de competiciones</field>
+            <field name="category_id" ref="module_category_competition"/>
+            <field name="implied_ids" eval="[(6, 0, [ref('manager_group')])]"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+    </data>
+
+    <data noupdate="1">
+        <!-- Multi - Company Rules -->
+        <record model="ir.rule" id="competition_competition_company_rule">
+            <field name="name">Competition: multi-company</field>
+            <field name="model_id" ref="model_competition_competition"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|',
+                                            ('company_id', '=', False),
+                                            ('company_id', 'child_of', [user.company_id.id]),
+                                        ]
+            </field>
+        </record>
+
+        <record model="ir.rule" id="competition_edition_company_rule">
+            <field name="name">Competition Edition: multi-company</field>
+            <field name="model_id" ref="model_competition_edition"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|',
+                                            ('company_id', '=', False),
+                                            ('company_id', 'child_of', [user.company_id.id]),
+                                        ]
+            </field>
+        </record>
+
+        <record model="ir.rule" id="competition_registration_company_rule">
+            <field name="name">Competition Registration: multi-company</field>
+            <field name="model_id" ref="model_competition_registration"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|',
+                                            ('company_id', '=', False),
+                                            ('company_id', 'child_of', [user.company_id.id]),
+                                        ]
+            </field>
+        </record>
+
+    </data>
+</openerp>

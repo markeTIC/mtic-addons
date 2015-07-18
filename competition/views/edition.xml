@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!-- Competition Edition views -->
+        <record id="edition_list_action" model="ir.actions.act_window">
+            <field name="name">Ediciones</field>
+            <field name="res_model">competition.edition</field>
+            <field name="view_mode">kanban,calendar,tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Pulse para crear una nueva edición de una competición.
+                </p>
+                <p>
+                    Mantenimiento de ediciones de competición.
+                </p>
+            </field>
+        </record>
+
+        <record id="edition_list_view" model="ir.ui.view">
+            <field name="name">Lista de ediciones de competición</field>
+            <field name="model">competition.edition</field>
+            <field name="arch" type="xml">
+                <tree string="Lista de ediciones de competición">
+                    <field name="competition_id"/>
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="state"/>
+                    <field name="message_unread" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+		
+		<record id="edition_form_view" model="ir.ui.view">
+            <field name="name">Formulario edición de competición</field>
+            <field name="model">competition.edition</field>
+            <field name="arch" type="xml">
+                <form string="Edición de competición">
+                    <header>
+                        <button string="Confirmar edición" name="button_confirm" states="draft" type="object" class="oe_highlight" groups="competition.admin_group"/>
+                        <button string="Finalizar edición" name="button_done" states="confirm" type="object" class="oe_highlight" groups="competition.admin_group"/>
+                        <button string="Pasar a borrador" name="button_draft" states="cancel" type="object" groups="competition.admin_group"/>
+                        <button string="Cancelar edición" name="button_cancel" states="draft,confirm" type="object" groups="competition.admin_group"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_right oe_button_box">
+                        </div>
+                        <div class="oe_title" style="width: 75%%">
+                            <h1>
+                                <field name="name" placeholder="Nombre edición de competición"/>
+                            </h1>
+                        </div>
+                        <group colspan="4">
+                            <field name="competition_id" invisible="1"/>
+	                        <group>
+	                            <field name="type"/>
+	                            <field name="registration_type"/>
+	                            <field name="reply_to"/>
+	                            <field name="seats_min"/>
+	                            <field name="seats_max"/>
+                                <field name="date_begin"/>
+                                <field name="date_end"/>
+	                        </group>
+	                        <group>
+                                <field name="user_id"/>
+	                            <field name="organizer_id"/>
+	                            <field name="email_competition_id" domain="[('model_id.model','=','competition.registration')]"/>
+	                            <field name="email_registration_id" domain="[('model_id.model','=','competition.registration')]"/>
+	                            <field name="active"/>
+	                        </group>
+                        </group>
+                        <notebook>
+                            <page string="Descripción">
+                                <group>
+                                    <field name="description" nolabel="1" placeholder="Descripción de la edición de la competición" />
+                                </group>
+                            </page>
+                            <page string="Registros">
+                                <field name="registration_ids" context="{'default_edition_id': active_id}"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="edition_kanban_view">
+            <field name="name">Vista kanban de ediciones de competición</field>
+            <field name="model">competition.edition</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="type"/>
+                    <field name="user_id"/>
+                    <field name="is_subscribed"/>
+                    <field name="date_begin"/>
+                    <field name="state"/>
+                    <field name="seats_max"/>
+                    <field name="seats_reserved"/>
+                    <field name="seats_available"/>
+                    <templates>
+                    <t t-name="kanban-box">
+                      <div class="oe_module_vignette">
+                        <a type="open" class="oe_module_icon">
+                            <div class="oe_competition_date "><t t-esc="record.date_begin.raw_value.getDate()"/></div>
+                            <div class="oe_competition_month_year">
+                                <t t-esc="record.date_begin.raw_value.toString('MMM')"/>
+                                <t t-esc="record.date_begin.raw_value.getFullYear()"/>
+                            </div>
+                            <div class="oe_competition_time"><t t-esc="record.date_begin.raw_value.toString('hh:mm tt')"/></div>
+                        </a>
+                        <div class="oe_module_desc">
+                            <h4><a type="open"><field name="name"/></a></h4>
+                            <p>
+                                <div><field name="type"/></div>
+                              <t t-if="record.user_id.raw_value">Organizado por <field name="user_id"/><br/></t>
+                              <t t-if="!record.seats_max.raw_value"><i>No hay plazas disponibles.</i></t>
+                              <t t-if="record.seats_max.raw_value">
+                                <i t-if="record.seats_available.raw_value">
+                                    <t t-if="record.seats_available.raw_value lte 10 and record.seats_available.raw_value gt 0"><i>Solamente</i></t>
+                                    <b><field name="seats_available"/></b>
+                                    <t t-if="record.seats_available.raw_value > 1">plazas </t>
+                                    <t t-if="record.seats_available.raw_value lte 1">plaza </t>
+                                    disponible.
+                                </i>
+                              </t>
+                            </p>
+                            <div groups="base.group_user,base.group_portal">
+                                <t t-if="record.seats_available.raw_value gt 0 and record.seats_max.raw_value">
+                                  <t t-if="!record.is_subscribed.raw_value">
+                                    <input t-att-id="record.id.raw_value" type="text" name="subscribe" class="no_of_seats" value="1" onchange="document.getElementById('btn_sub' +this.id).setAttribute('data-context',JSON.stringify({'ticket':this.value}))"/>
+                                    <button t-att-id="'btn_sub'+record.id.raw_value" type="object" name="subscribe_to_event" class="oe_subscribe_button">
+                                        <span>Inscribirse</span>
+                                    </button>
+                                  </t>
+                                </t>
+                                <t t-if="record.is_subscribed.raw_value">
+                                  <button type="object" name="unsubscribe_to_edition" class="oe_unsubscribe_button ">
+                                    <span>Inscrito</span>
+                                    <span class="oe_unsubscribe">Cancelar inscripción</span>
+                                  </button>
+                                </t>
+                            </div>
+                        </div>
+                      </div>
+                    </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="edition_calendar_view" model="ir.ui.view">
+            <field name="name">Calendario de ediciones de competición</field>
+            <field name="model">competition.edition</field>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+                <calendar color="type" date_start="date_begin" date_stop="date_end" string="Edición de competición">
+                    <field name="name"/>
+                    <field name="type"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="edition_search_view">
+            <field name="name">Edición de competición</field>
+            <field name="model">competition.edition</field>
+            <field name="arch" type="xml">
+                <search string="Ediciones de competición">
+                    <field name="name" string="Ediciones de competición"/>
+                    <filter string="Mensajes sin leer" name="message_unread" domain="[('message_unread','=',True)]"/>
+                    <separator/>
+                    <filter string="Borrador" name="draft" domain="[('state','=','draft')]" help="Inscripciones nuevas"/>
+                    <filter string="Confirmada" domain="[('state','=','confirm')]" help="Inscripciones confirmadas"/>
+                    <separator/>
+                    <filter string="Mis ediciones de competición" help="Mis ediciones de competición" domain="[('user_id','=',uid)]"/>
+                    <separator/>
+                    <filter string="Próximas" name="upcoming" domain="[('date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]" help="Próximas ediciones de competición a celebrar" />
+                    <field name="type"/>
+                    <field name="user_id"/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Responsable" context="{'group_by': 'user_id'}"/>
+                        <filter string="Tipo de competición" context="{'group_by':'type'}"/>
+                        <filter string="Estado" context="{'group_by':'state'}"/>
+                        <filter string="Mes de inicio" domain="[]" context="{'group_by':'date_begin'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <menuitem name="Ediciones de competición" id="edition" action="edition_list_action" parent="competitions"/>
+
+    </data>
+</openerp>
+

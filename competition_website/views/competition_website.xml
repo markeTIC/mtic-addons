@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="assets_editor" inherit_id="website.assets_editor" name="Edition Editor" groups="competition.manager_group">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/competition_website/static/src/js/competition_website.editor.js"></script>
+            </xpath>
+        </template>
+
+        <!-- Layout add nav and footer -->
+        <template id="header_footer_custom" inherit_id="website.footer_default" name="Footer Competition Link">
+            <xpath expr="//ul[@id='products']" position="inside">
+                <li><a href="/edition">Competition Editions</a></li>
+            </xpath>
+        </template>
+
+        <!-- Page -->
+        <template id="index" name="Editions">
+            <t t-call="website.layout">
+              <div id="wrap">
+                <div class="oe_structure"/>
+                <div class="container">
+                    <div class="row mt8">
+                        <div class="col-sm-5">
+                            <ol class="breadcrumb mb0">
+                                <li>
+                                    <a href="/edition">Competiciones</a>
+                                </li>
+                                <li t-if="current_date"><t t-esc="current_date"/></li>
+                                <li t-if="current_type"><t t-esc="current_type.name"/></li>
+                            </ol>
+                        </div><div class="col-sm-7">
+                            <t t-call="website.pager" >
+                                <t t-set="classname">pull-right</t>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row mt32 mb32">
+                        <div class="col-md-9" id="middle_column">
+                            <div class="text-center text-muted" t-if="not edition_ids">
+                              <h1>No se han encontrado ediciones</h1>
+                              <t groups="base.group_website_publisher">
+                                  <p groups="competition.manager_group">Utiliza el menú <i>'Contenido'</i> para crear una edición.</p>
+                              </t>
+                            </div>
+                            <ul class="media-list">
+                                <li t-foreach="edition_ids" t-as="edition" class="media">
+                                    <div itemscope="itemscope" itemtype="http://schema.org/CompetitionEdition" class="media-body">
+                                        <h4 class="media-heading">
+                                            <a itemprop="url" t-att-class="edition.state == 'done' and 'text-success'" t-attf-href="/edition/#{ slug(edition) }/#{(not edition.menu_id) and 'register' or ''}"><span itemprop="name" t-field="edition.name"> </span></a>
+                                            <small t-if="not edition.address_id" class="label label-info">Online</small>
+                                            <small t-if="not edition.website_published" class="label label-danger">not published</small>
+                                        </h4>
+                                        <div>
+                                            <t t-if="edition.organizer_id">
+                                                Organized by: <span t-field="edition.organizer_id"> </span>
+                                            </t>
+                                        </div>
+                                        <div>
+                                            <i class="fa fa-clock-o"></i> <span itemprop="startDate" t-field="edition.date_begin" t-field-options='{"hide_seconds":"True"}'> </span> <i>to</i> <span itemprop="endDate" t-field="edition.date_end" t-field-options='{"hide_seconds":"True"}'> </span>
+                                        </div>
+                                        <div itemprop="location" t-field="edition.address_id" t-field-options='{
+                                            "widget": "contact",
+                                            "fields": ["city"]
+                                            }'/>
+                                        <div class="text-muted" t-if="edition.type">
+                                            <i class="fa fa-tag"></i> <span t-field="edition.type"/>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3 oe_structure" id="right_column">
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure"/>
+              </div>
+            </t>
+        </template>
+
+        <template id="edition_right_photos" inherit_id="competition_website.index" active="False" customize_show="True" name="Fotos">
+            <xpath expr="//div[@id='right_column']" position="inside">
+                <div class="row">
+                    <div class="col-md-12 mb16">
+                        <div class="oe_demo">
+                            <img src="/competition_website/static/src/img/openerp_enterprise_of_the_year.png" class="img-rounded"/>
+                            <div class="text-center"><a href="/edition">Fotos de ediciones anteriores</a></div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb16">
+                        <div class="oe_demo">
+                            <img src="/competition_website/static/src/img/training.jpg" class="img-rounded"/>
+                            <div class="text-center"><a href="/edition">Nuestros entrenamientos</a></div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+
+        <template id="edition_right_quotes" inherit_id="competition_website.index" active="False" customize_show="True" name="Citas">
+            <xpath expr="//div[@id='right_column']" position="inside">
+                <div class="row">
+                    <div class="col-md-12 mb16">
+                        <blockquote class="oe_snippet_body">
+                            <p>
+                                Escribe aquí una cita de alguno de los participantes.
+                                Esto aporta confianza a los visitantes.
+                            </p>
+                            <small>Autor</small>
+                        </blockquote>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+
+        <template id="edition_left_column" customize_show="True" inherit_id="competition_website.index" name="Filtros">
+            <xpath expr="//div[@id='middle_column']" position="attributes">
+                <attribute name="class">col-md-6</attribute>
+            </xpath>
+            <xpath expr="//div[@id='middle_column']" position="before">
+                <div class="col-md-3 css_noprint" id="left_column">
+                    <ul class="nav nav-pills nav-stacked">
+                        <t t-foreach="dates" t-as="date">
+                            <li t-att-class="searches.get('date') == date[0] and 'active' or ''" t-if="date[3] or (date[0] in ('old','all'))">
+                                <a t-attf-href="/edition?{{ keep_query('type', date=date[0]) }}"><t t-esc="date[1]"/>
+                                    <span t-if="date[3]" class="badge pull-right"><t t-esc="date[3]"/></span>
+                                </a>
+                            </li>
+                        </t>
+                    </ul>
+                </div>
+            </xpath>
+        </template>
+
+        <template id="edition_category" inherit_id="competition_website.edition_left_column" active="False" customize_show="True" name="Filtro por categoría">
+            <xpath expr="//div[@id='left_column']" position="inside">
+                <ul class="nav nav-pills nav-stacked mt32">
+                    <t t-foreach="types" t-as="type">
+                        <li t-if="type['type']"
+                            t-att-class="searches.get('type') == str(type['type'] and type['type'][0]) and 'active' or ''">
+                            <a t-attf-href="/edition?{{ keep_query('date', type=type['type'][0]) }}"><t t-esc="type['type'][1]"/>
+                                <span class="badge pull-right"><t t-esc="type['type_count']"/></span>
+                            </a>
+                        </li>
+                    </t>
+                </ul>
+            </xpath>
+        </template>
+
+        <template id="layout">
+            <t t-call="website.layout">
+              <div id="wrap" class="js_edition o_competition_website">
+                <div class="container">
+                    <div class="row mt8">
+                        <div class="col-sm-7" id="edition_menu">
+                            <ol class="breadcrumb mb0" t-if="not edition.menu_id">
+                                <li><a href="/edition">Todas las ediciones</a></li>
+                                <li t-if="edition.type">
+                                    <a t-attf-href="/edition?type=#{edition.type.id}" t-esc="edition.type.name"/>
+                                </li>
+                                <li class="active">
+                                    <span t-field="edition.name"/>
+                                </li>
+                            </ol>
+                            <ol class="breadcrumb mb0" id="edition_menu" t-if="edition.menu_id">
+                                <t t-foreach="edition.menu_id.child_id" t-as="submenu">
+                                    <t t-call="website.submenu"/>
+                                </t>
+                            </ol>
+                        </div>
+                        <div class="col-sm-5" groups="competition.manager_group">
+                            <t t-call="website.publish_management">
+                              <t t-set="object" t-value="edition"/>
+                              <t t-set="publish_edit" t-value="True"/>
+                              <t t-set="action" t-value="'edition.action_edition_view'"/>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+                <t t-raw="0"/>
+                <div class="oe_structure"/>
+              </div>
+            </t>
+        </template>
+
+        <template id="template_intro">
+            <t t-call="competition_website.layout">
+                <section class="container" data-snippet-id="title">
+                    <h1 class="text-center">Introducción...</h1>
+                </section>
+                <div class="oe_structure oe_empty"/>
+            </t>
+        </template>
+
+        <template id="edition_details">
+            <t t-call="competition_website.layout">
+                <div itemscope="itemscope" itemtype="http://schema.org/CompetitionEdition" class="container">
+                    <h1 itemprop="name" class="text-center" t-field="edition.name"></h1>
+                    <h4 class="text-center text-muted">
+                        <i class="fa fa-clock-o"></i> <span itemprop="startDate" t-field="edition.date_begin" t-field-options='{"hide_seconds":"True"}'/> to
+                        <span itemprop="endDate" t-field="edition.date_end" t-field-options='{"hide_seconds":"True"}'/>
+                    </h4>
+                    <h4 class="text-center text-muted"
+                        t-field="edition.address_id" t-field-options='{
+                        "widget": "contact",
+                        "fields": ["city"]
+                        }'/>
+                    <div class="row mt32 mb32">
+                        <t t-raw="0"/>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="404">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="oe_structure oe_empty">
+                        <div class="container">
+                            <h1 class="mt32">Edición no encontrada!</h1>
+                            <p>Lo siento, la edición solicitada no está disponible.</p>
+                            <p><a t-attf-href="/edition">Volver a la lista.</a></p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="edition_description_full">
+            <t t-call="competition_website.edition_details">
+                <div class="col-md-8">
+                    <div itemprop="description" t-field="edition.description"></div>
+                    <div class="clearfix"/>
+                    <ul class="media-list" id="comment">
+                        <li t-foreach="edition.website_message_ids" t-as="comment" class="media">
+                            <div class="media-body">
+                                <t t-call="website.publish_management">
+                                    <t t-set="object" t-value="comment"/>
+                                    <t t-set="publish_edit" t-value="True"/>
+                                </t>
+                                <t t-raw="comment.body"/>
+                                <small class="pull-right muted text-right">
+                                    <div t-field="comment.author_id"/>
+                                    <div t-field="comment.date" t-field-options='{"hide_seconds":"True"}'/>
+                                </small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4 css_noprint">
+                    <div class="clearfix"/>
+
+                    <div class="panel panel-default" t-if="edition.address_id">
+                        <div class="panel-heading">
+                            <h4>En donde</h4>
+                        </div>
+                        <div class="panel-body">
+                            <a t-att-href="edition.google_map_link()" target="_BLANK">
+                                <img t-att-src="edition.google_map_img()" width="100%%"/>
+                            </a>
+                            <div itemprop="location" class="mt16 mb8" t-field="edition.address_id" t-field-options='{
+                                "widget": "contact",
+                                "fields": ["address", "phone", "mobile", "fax", "email"]
+                                }'/>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>Cuando</h4>
+                        </div>
+                        <div class="panel-body">
+                            <i class="fa fa-clock-o"></i> From <span t-field="edition.date_begin" t-field-options='{"hide_seconds":"True"}'> </span><br/>
+                            <i class="fa fa-clock-o"></i> To <span t-field="edition.date_end" t-field-options='{"hide_seconds":"True"}'> </span>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default" t-if="edition.organizer_id">
+                        <div class="panel-heading">
+                            <h4>Organizador</h4>
+                        </div>
+                        <div class="panel-body" t-field="edition.organizer_id" t-field-options='{
+                            "widget": "contact",
+                            "fields": ["name", "phone", "mobile", "fax", "email"]
+                            }'/>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>Redes sociales</h4>
+                        </div>
+                        <div class="panel-body">
+                            <t t-call="website_mail.follow"><t t-set="object" t-value="edition"/></t>
+                            <div t-if="edition.twitter_hashtag" class="mt16">
+                                <p><strong>Participar en Twitter</strong></p>
+                                <p class="text-muted">
+                                    Mira lo que la gente ve y dice de esta edición,
+                                    y únete a la conversación.
+                                </p>
+                                <p><strong>Emplea ésta etiqueta:
+                                    <a t-att-href="'http://twitter.com/search?q=%23'+edition.twitter_hashtag" target="_blank" class="label label-primary">#<span t-field="edition.twitter_hashtag"/></a>
+                                </strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- User Navbar -->
+        <template id="content_new_edition" inherit_id="website.user_navbar" groups="competition.manager_group">
+            <xpath expr="//ul[@id='oe_systray']/li/ul[@class='dropdown-menu oe_content_menu']" position="inside">
+                 <li><a href="#" data-action="new_edition">Nueva edición</a></li>
+            </xpath>
+        </template>
+    </data>
+</openerp>

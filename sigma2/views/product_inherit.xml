@@ -18,7 +18,7 @@
                                 <field name="atex"/>
                             </group>
                             <group>
-                                <field name="barcode"/>
+                                <field name="barcode" string="Código"/>
                             </group>
                         </group>
                     </xpath>
@@ -39,6 +39,15 @@
                     </group>
                     <group name="sale_condition" position="replace">
                     </group>
+                    <field name="loc_rack" position="attributes">
+                        <attribute name="string">Almacén</attribute>
+                    </field>
+                    <field name="loc_row" position="attributes">
+                        <attribute name="string">Estantería</attribute>
+                    </field>
+                    <field name="loc_case" position="attributes">
+                        <attribute name="string">Fila</attribute>
+                    </field>
                  </data>
             </field>
         </record>
@@ -58,6 +67,31 @@
                     </xpath>
                     <xpath expr="//page[@name='variants']" position="replace">
                     </xpath>
+                    <field name="ean13" position="replace">
+                        <field name="ext_barcode"/>
+                    </field>
+                    <field name="default_code" position="attributes">
+                        <attribute name="string">Referencia</attribute>
+                    </field>
+                 </data>
+            </field>
+        </record>
+
+        <record id="product_normal_form_view" model="ir.ui.view">
+            <field name="name">sigma2.product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="priority" eval="32" />
+            <field name="arch" type="xml">
+                <data>
+                    <field name="ean13" position="replace">
+                         <field name="ext_barcode"/>
+                    </field>
+                    <field name="default_code" position="attributes">
+                        <attribute name="string">Referencia</attribute>
+                    </field>
+                    <field name="lst_price" position="replace">
+                    </field>
                  </data>
             </field>
         </record>
@@ -103,7 +137,7 @@
                         <attribute name="string">Productos</attribute>
                     </xpath>
                     <field name="default_code" position="before">
-                        <field name="barcode"/>
+                        <field name="barcode" string="Código"/>
                     </field>
                     <field name="attribute_value_ids" position="replace">
                     </field>
@@ -129,7 +163,7 @@
                 <field name="product_variant_ids" position="replace">
                 </field>
                 <field name="name" position="before">
-                   <field name="barcode"/>
+                    <field name="barcode" string="Código de barras" filter_domain="['|',('barcode','ilike',self),('ext_barcode','ilike',self)]"/>
                 </field>
             </field>
         </record>

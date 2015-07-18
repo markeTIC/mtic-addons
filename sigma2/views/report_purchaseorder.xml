@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<template id="report_purchaseorder_document" inherit_id="purchase.report_purchaseorder_document">
+    <xpath expr="//t[@t-call='report.external_layout']" position="replace">
+        <t t-call="report.external_layout">
+            <div class="page">
+                <div class="oe_structure"/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <strong>Entregar a:</strong>
+                        <div t-if="o.dest_address_id">
+                            <div t-field="o.dest_address_id"
+                                t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                        </div>
+
+                        <div t-if="not o.dest_address_id and o.picking_type_id and o.picking_type_id.warehouse_id">
+                            <span t-field="o.picking_type_id.warehouse_id.name"/>
+                            <div t-field="o.picking_type_id.warehouse_id.partner_id"
+                                t-field-options='{"widget": "contact", "fields": ["address", "phone", "fax"], "no_marker": true}'/>
+                        </div>
+                    </div>
+                    <div class="col-xs-5 col-xs-offset-1">
+                        <div t-field="o.partner_id"
+                            t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                            <p t-if="o.partner_id.vat">NIF: <span t-field="o.partner_id.vat"/></p>
+                    </div>
+                </div>
+
+                <h2 t-if="o.state != 'draft'">Pedido de compra <span t-field="o.name"/></h2>
+                <h2 t-if="o.state == 'draft'">Solicitud de presupuesto <span t-field="o.name"/></h2>
+
+                <div class="row mt32 mb32">
+                    <div t-if="o.partner_ref" class="col-xs-3">
+                        <strong>Su referencia:</strong>
+                        <p t-field="o.partner_ref"/>
+                    </div>
+                    <div t-if="o.date_order" class="col-xs-3">
+                        <strong>Fecha pedido:</strong>
+                        <p t-field="o.date_order" t-field-options='{"format": "dd/MM/yyyy"}'/>
+                    </div>
+                    <div t-if="o.validator" class="col-xs-3">
+                        <strong>Validado por:</strong>
+                        <p t-field="o.validator"/>
+                    </div>
+                </div>
+
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th><strong>Descripción</strong></th>
+                            <th class="text-center"><strong>Fecha entrega</strong></th>
+                            <th class="text-right"><strong>Cantidad</strong></th>
+                            <th class="text-right"><strong>Precio unidad</strong></th>
+                            <th class="text-right"><strong>Importe</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="o.order_line" t-as="line">
+                            <td>
+                                <span t-field="line.name"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-field="line.date_planned"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.product_qty"/>
+                                <span t-field="line.product_uom.name" groups="product.group_uom"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.price_unit"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.price_subtotal"
+                                    t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="row">
+                    <div class="col-xs-2 pull-right">
+                        <table class="table table-condensed">
+                            <tr class="border-black">
+                                <td><strong>Total</strong></td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_untaxed"
+                                        t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <p t-field="o.notes"/>
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </xpath>
+</template>
+
+</data>
+</openerp>

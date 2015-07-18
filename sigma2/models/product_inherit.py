@@ -18,7 +18,8 @@ class product_template(models.Model):
     _inherit = 'product.template'
     _name = 'product.template'
 
-    barcode = fields.Char('Código de barras', required=True, select=True)
+    barcode = fields.Char('Código', required=True, select=True)
+    ext_barcode = fields.Char('Código de barras', required=False, select=True)
     atex = fields.Boolean('Atex')
 
     _defaults = {
@@ -104,6 +105,7 @@ class product_product(models.Model):
         return result
 
     def name_search(self, cr, user, name='', args=None, operator='ilike', context=None, limit=100):
+        _logger.info("Buscando producto por nombre...")
         if not args:
             args = []
         if name:

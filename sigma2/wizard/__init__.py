@@ -4,6 +4,4 @@
 #    __openerp__.py file at the root folder of this module.    #
 ################################################################
 
-import models
-import report
-import wizard
+import preventive_list

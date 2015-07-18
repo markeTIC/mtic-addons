@@ -20,6 +20,13 @@ class sigma2_order_type(models.Model):
 
     code = fields.Char('Código', required=True)
     name = fields.Char('Nombre', required=True)
+    type = fields.Selection(
+        selection=[
+            ('P', 'Preventivo'),
+            ('C', 'Correctivo'),
+        ],
+        required=False,
+        string='Tipo mantenimiento')
     counter = fields.Many2one('ir.sequence', 'Contador', ondelete='restrict')
     notes = fields.Text('Notas')
     active = fields.Boolean('Registro activo')

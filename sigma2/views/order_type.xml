@@ -25,6 +25,7 @@
                 <tree string="Lista de tipos de órdenes"> 
                     <field name="code"/>
                     <field name="name"/>
+                    <field name="type"/>
                     <field name="counter"/>
                 </tree>
             </field>
@@ -50,6 +51,7 @@
                         </div>
                         <group colspan="4">
 	                        <group>
+	                            <field name="type"/>
 	                            <field name="counter"/>
 	                            <field name="active"/>
 	                        </group>

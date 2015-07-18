@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'SIGMa 2',
-    'version': '1.0.45',
+    'version': '1.1.50',
     'category': 'Mantenimiento',
     'sequence': 1,
     'complexity': 'easy',
@@ -38,6 +38,7 @@ Aplicación de gestión de mantenimiento preventivo, correctivo y gestión del a
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'security/ir.rule.xml',
         'data/sequences.xml',
         'data/order_type.xml',
         'views/product_inherit.xml',
@@ -57,6 +58,11 @@ Aplicación de gestión de mantenimiento preventivo, correctivo y gestión del a
         'views/maintenance_order.xml',
         'data/menu.xml',
         'data/action_planning_cron.xml',
+        'wizard/preventive_list_view.xml',
+        'views/report_preventive_list.xml',
+        'views/report_purchaseorder.xml',
+        'views/report_purchasequotation.xml',
+        'sigma2_report.xml',
     ],
     'demo': [],
     'test': [],

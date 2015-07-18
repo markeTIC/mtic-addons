@@ -65,10 +65,10 @@
                         	 <page string="Órdenes generadas">
 		                        <group>
                                     <field name="maintenance_order_ids" nolabel="1">
-                                        <tree string="Órdenes generadas" default_order="date desc" colors="lightgrey:status == 'finished';red:status == 'canceled'">
+                                        <tree string="Órdenes generadas" default_order="date desc" colors="lightgrey:state == 'finished';red:state == 'canceled'">
                                             <field name="date"/>
                                             <field name="code"/>
-                                            <field name="status"/>
+                                            <field name="state"/>
                                             <field name="end_date"/>
                                             <field name="repair_time"/>
                                         </tree>

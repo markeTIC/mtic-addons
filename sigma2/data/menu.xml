@@ -46,20 +46,20 @@
             <menuitem id="menu_sigma2_preventive" parent="menu_sigma2" name="Preventivo" groups="sigma2.user_group" sequence="50" />
                 <menuitem id="menu_sigma2_preventive_precedures" parent="menu_sigma2_preventive" name="Procedimientos" action="procedure_list_action" groups="sigma2.manager_group" sequence="10" />
                 <menuitem id="menu_sigma2_preventive_action_planning" parent="menu_sigma2_preventive" name="Gamas de preventivo" action="action_planning_list_action" groups="sigma2.manager_group" sequence="20" />
-                <menuitem id="menu_sigma2_preventive_maintenance_order" parent="menu_sigma2_preventive" name="Órdenes de preventivo" action="prev_maintenance_order_list_action" groups="sigma2.user_group" sequence="30" />
-                <menuitem id="menu_sigma2_pending_preventive_maintenance_order" parent="menu_sigma2_preventive" name="Órdenes preventivo pend." action="pend_prev_maintenance_order_list_action" groups="sigma2.user_group" sequence="40" />
+                <menuitem id="menu_sigma2_pending_preventive_maintenance_order" parent="menu_sigma2_preventive" name="Órdenes preventivo pend." action="pend_prev_maintenance_order_list_action" groups="sigma2.user_group" sequence="30" />
+                <menuitem id="menu_sigma2_preventive_maintenance_order" parent="menu_sigma2_preventive" name="Órdenes de preventivo" action="prev_maintenance_order_list_action" groups="sigma2.user_group" sequence="40" />
 
             <!-- Correctivo -->
             <menuitem id="menu_sigma2_corrective" parent="menu_sigma2" name="Órdenes de mantenimiento" groups="sigma2.production_group" sequence="60" />
-                <menuitem id="menu_sigma2_corrective_maintenance_order" parent="menu_sigma2_corrective" name="Órdenes de correctivo" action="corr_maintenance_order_list_action" groups="sigma2.production_group" sequence="10" />
-                <menuitem id="menu_sigma2_pending_corrective_maintenance_order" parent="menu_sigma2_corrective" name="Órdenes correctivo pend." action="pend_corr_maintenance_order_list_action" groups="sigma2.production_group" sequence="20" />
-                <menuitem id="menu_sigma2_completed_corrective_maintenance_order" parent="menu_sigma2_corrective" name="Órdenes realizadas" action="finished_maintenance_order_list_action" groups="sigma2.production_group" sequence="20" />
-                <menuitem id="menu_sigma2_maintenance_order" parent="menu_sigma2_corrective" name="Órdenes de mantenimiento" action="maintenance_order_list_action" groups="sigma2.admin_group" sequence="30" />
+                <menuitem id="menu_sigma2_pending_corrective_maintenance_order" parent="menu_sigma2_corrective" name="Órdenes correctivo pend." action="pend_corr_maintenance_order_list_action" groups="sigma2.production_group" sequence="10" />
+                <menuitem id="menu_sigma2_corrective_maintenance_order" parent="menu_sigma2_corrective" name="Órdenes de correctivo" action="corr_maintenance_order_list_action" groups="sigma2.production_group" sequence="20" />
+                <menuitem id="menu_sigma2_completed_corrective_maintenance_order" parent="menu_sigma2_corrective" name="Órdenes realizadas" action="finished_maintenance_order_list_action" groups="sigma2.production_group" sequence="30" />
+                <menuitem id="menu_sigma2_maintenance_order" parent="menu_sigma2_corrective" name="Órdenes de mantenimiento" action="maintenance_order_list_action" groups="sigma2.admin_group" sequence="40" />
 
             <!-- Mejora -->
             <menuitem id="menu_sigma2_improvement" parent="menu_sigma2" name="Propuestas de mejora" groups="sigma2.production_group" sequence="70" />
-                <menuitem id="menu_sigma2_improvement_order" parent="menu_sigma2_improvement" name="Propuestas de mejora" action="improv_maintenance_order_list_action" groups="sigma2.production_group" sequence="10" />
-                <menuitem id="menu_sigma2_pending_improvement_order" parent="menu_sigma2_improvement" name="Propuestas mejora pend." action="pend_improv_maintenance_order_list_action" groups="sigma2.production_group" sequence="20" />
+                <menuitem id="menu_sigma2_pending_improvement_order" parent="menu_sigma2_improvement" name="Propuestas mejora pend." action="pend_improv_maintenance_order_list_action" groups="sigma2.production_group" sequence="10" />
+                <menuitem id="menu_sigma2_improvement_order" parent="menu_sigma2_improvement" name="Propuestas de mejora" action="improv_maintenance_order_list_action" groups="sigma2.production_group" sequence="20" />
 
             <!-- Personal -->
             <menuitem id="menu_sigma2_people" parent="menu_sigma2" name="Personal" groups="sigma2.manager_group" sequence="80" />

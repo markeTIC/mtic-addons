@@ -140,7 +140,7 @@ class sigma2_action_planning(models.Model):
                     'asset_level2': asset_level2 and asset_level2.id,
                     'asset_level3': asset_level3 and asset_level3.id,
                     'asset_id': action_planning.asset_id.id,
-                    'description': action_planning.procedure_id.name + ' Instr. %s' % action_planning.instruction,
+                    'description': u'Revisión preventivo: ' + action_planning.procedure_id.code + ' - ' + action_planning.procedure_id.name + ' Instr. ' + action_planning.instruction,
                     'action_planning_id': action_planning.id
                 })
                 _logger.info("generada orden %s para %s", new_mo.code, new_mo.asset_id.name)

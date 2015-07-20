@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record id="partner_coords_form_view" model="ir.ui.view">
+            <field name="name">partner.coords.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="website" position="before">
+                    <label for="coord_latitude" string="Coordenadas"/>
+                    <div>
+                        <field name="coord_latitude" placeholder="Latitud" style="width: 50%%" nolabel="1"/>
+                        <field name="coord_longitude" placeholder="Longitud" style="width: 50%%" nolabel="1"/>
+                    </div>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

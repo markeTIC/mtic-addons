@@ -50,9 +50,10 @@
                         <tr>
                             <th><strong>Descripción</strong></th>
                             <th class="text-center"><strong>Fecha entrega</strong></th>
-                            <th class="text-right"><strong>Cantidad</strong></th>
-                            <th class="text-right"><strong>Precio unidad</strong></th>
+                            <th class="text-right"><strong>Cant.</strong></th>
+                            <th class="text-right"><strong>Precio ud.</strong></th>
                             <th class="text-right"><strong>Importe</strong></th>
+                            <th style="display:none;"><strong>Net Price</strong></th>
                         </tr>
                     </thead>
                     <tbody>

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (c) 2015 markeTIC Solutions (http://www.marketic.eu)
-#                       Jose F. Fernandez <jffernandez@marketic.eu>
+#    Copyright (c) 2017 Fenix Engineering Solutions (http://www.fenix-es.com)
+#                       Jose F. Fernandez <jffernandez@fenix-es.com>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,14 +20,14 @@
 ##############################################################################
 {
     'name': 'SIGMa 2',
-    'version': '1.1.50',
+    'version': '1.1.58',
     'category': 'Mantenimiento',
     'sequence': 1,
     'complexity': 'easy',
     'license': 'AGPL-3',
-    'author': 'markeTIC Solutions',
-    'website': 'www.marketic.eu',
-    'depends': ['note', 'purchase', 'manufacturer', 'hr', ],
+    'author': 'Fenix Engineering Solutions',
+    'website': 'www.fenix-es.com',
+    'depends': ['note', 'purchase', 'manufacturer', 'hr', 'web_dashboard_open_action', ],
     'summary': 'Sistema Integral de Gestión de Mantenimiento',
     'description': """
 SIGMa 2  -  Sistema Integral de Gestión de Mantenimiento
@@ -41,6 +41,7 @@ Aplicación de gestión de mantenimiento preventivo, correctivo y gestión del a
         'security/ir.rule.xml',
         'data/sequences.xml',
         'data/order_type.xml',
+        'data/email_templates.xml',
         'views/product_inherit.xml',
         'views/partner_inherit.xml',
         'views/purchase_inherit.xml',
@@ -56,13 +57,20 @@ Aplicación de gestión de mantenimiento preventivo, correctivo y gestión del a
         'views/speciality.xml',
         'views/action_planning.xml',
         'views/maintenance_order.xml',
-        'data/menu.xml',
+        'views/product_label.xml',
         'data/action_planning_cron.xml',
         'wizard/preventive_list_view.xml',
+        'wizard/create_product_labels_view.xml',
+        'wizard/maintenance_order_list_view.xml',
         'views/report_preventive_list.xml',
         'views/report_purchaseorder.xml',
         'views/report_purchasequotation.xml',
+        'views/report_maintenance_order_list.xml',
         'sigma2_report.xml',
+        'report/maintenance_order_report_view.xml',
+        'report/purchase_invoice_report_view.xml',
+        'views/stock_inherit.xml',
+        'data/menu.xml',
     ],
     'demo': [],
     'test': [],

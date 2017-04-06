@@ -1,0 +1,45 @@
+<openerp>
+    <data noupdate="1">
+
+        <!--Email template -->
+        <record id="email_template_maintenance_order_stop" model="email.template">
+            <field name="name">Orden de mantenimiento - Paro de máquina</field>
+            <field name="email_from">${'noreply@localhost'|safe}</field>
+            <field name="subject">Máquina parada!</field>
+            <!-- field name="model_id" ref="sigma2.maintenance.order"/ NO ENCUENTRA EL XML_ID!!?? -->
+            <field name="partner_to"></field>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+    <p>La máquina ${object.asset_id.name} está parada!</p>
+
+    <p>Orden de mantenimiento <a href="/web/#action=${ctx['params']['action']}&id=${object.id}&view_type=form&model=sigma2.maintenance.order">${object.code}</a> emitida por ${object.origin_employee_id.display_name}:</p>
+
+    <p>${object.description}</p>
+
+</div>
+            ]]></field>
+        </record>
+
+        <record id="email_template_maintenance_order_run" model="email.template">
+            <field name="name">Orden de mantenimiento - Arranque de máquina</field>
+            <field name="email_from">${'noreply@localhost'|safe}</field>
+            <field name="subject">Máquina en marcha</field>
+            <!-- field name="model_id" ref="sigma2.maintenance.order"/ NO ENCUENTRA EL XML_ID!!?? -->
+            <field name="partner_to"></field>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+    <p>La máquina ${object.asset_id.name} ha arrancado</p>
+
+    <p>Orden de mantenimiento <a href="/web/#action=${ctx['params']['action']}&id=${object.id}&view_type=form&model=sigma2.maintenance.order">${object.code}</a> emitida por ${object.origin_employee_id.display_name}:</p>
+
+    <p>${object.description}</p>
+
+</div>
+            ]]></field>
+        </record>
+    </data>
+</openerp>

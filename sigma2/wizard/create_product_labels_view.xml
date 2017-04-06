@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_create_product_labels" model="ir.ui.view">
+              <field name="name">Crear etiquetas de productos</field>
+              <field name="model">sigma2.create_product_labels</field>
+              <field name="arch" type="xml">
+                <form string="Crear etiquetas de productos">
+                    <group string="Se crearán las etiquetas para los productos seleccionados.">
+                    </group>
+                    <footer>
+                        <button name="create_product_labels" string="Crear etiquetas" type="object" class="oe_highlight" />
+                        <button string="Cancelar" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+              </field>
+        </record>
+
+        <act_window id="action_create_product_labels"
+                    key2="client_action_multi"
+                    name="Crear etiquetas"
+                    res_model="sigma2.create_product_labels"
+                    src_model="product.product"
+                    groups="sigma2.user_group"
+                    view_mode="form"
+                    target="new"
+                    view_type="form" />
+
+    </data>
+</openerp>

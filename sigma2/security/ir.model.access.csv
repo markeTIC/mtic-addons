@@ -13,7 +13,7 @@ sigma2_asset_employee,Activo SIGMa 2 - Employee,model_sigma2_asset,base.group_us
 sigma2_asset_manager,Activo SIGMa 2 - Manager,model_sigma2_asset,sigma2.manager_group,1,1,1,1
 sigma2_procedure_employee,Procedimiento SIGMa 2 - Employee,model_sigma2_procedure,base.group_user,1,0,0,0
 sigma2_procedure_manager,Procedimiento SIGMa 2 - Manager,model_sigma2_procedure,sigma2.manager_group,1,1,1,1
-sigma2_order_type_employee,Tipo orden SIGMa 2 - Employee,model_sigma2_order_type,base.group_user,1,0,0,0
+sigma2_order_type_employee,Tipo orden SIGMa 2 - Employee,model_sigma2_order_type,base.group_user,1,1,0,0
 sigma2_order_type_manager,Tipo orden SIGMa 2 - Manager,model_sigma2_order_type,sigma2.manager_group,1,1,1,1
 sigma2_action_planning_employee,Gama SIGMa 2 - Employee,model_sigma2_action_planning,base.group_user,1,0,0,0
 sigma2_action_planning_manager,Gama SIGMa 2 - Manager,model_sigma2_action_planning,sigma2.manager_group,1,1,1,1
@@ -28,3 +28,9 @@ sigma2_maintenance_order_worker_employee,Trabajador orden mantenimiento SIGMa 2 
 sigma2_maintenance_order_worker_user,Trabajador orden mantenimiento SIGMa 2 - User,model_sigma2_maintenance_order_worker,sigma2.user_group,1,1,1,1
 sigma2_maintenance_order_part_employee,Repuesto orden mantenimiento SIGMa 2 - Employee,model_sigma2_maintenance_order_part,base.group_user,1,0,0,0
 sigma2_maintenance_order_part_user,Repuesto orden mantenimiento SIGMa 2 - User,model_sigma2_maintenance_order_part,sigma2.user_group,1,1,1,1
+sigma2_product_label_employee,Etiqueta de producto SIGMa 2 - Employee,model_sigma2_product_label,base.group_user,1,1,1,1
+sigma2_maintenance_order_report_employee,Informe de órdenes de trabajo SIGMa 2 - Employee,model_sigma2_maintenance_order_report,base.group_user,1,1,1,1
+sigma2_purchase_invoice_report_employee,Informe de facturas de compra SIGMa 2 - Employee,model_sigma2_purchase_invoice_report,base.group_user,1,1,1,1
+sigma2_hr_employee_manager,Empleados - Manager,hr.model_hr_employee,sigma2.manager_group,1,1,1,1
+sigma2_hr_department_manager,Empleados - Manager,hr.model_hr_department,sigma2.manager_group,1,1,1,1
+sigma2_ir_property_manager,ir_property – Manager,base.model_ir_property,sigma2.manager_group,1,1,1,1

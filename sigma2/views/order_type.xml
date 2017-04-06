@@ -53,7 +53,7 @@
 	                        <group>
 	                            <field name="type"/>
 	                            <field name="counter"/>
-	                            <field name="active"/>
+	                            <field name="active" groups="sigma2.admin_group"/>
 	                        </group>
                         </group>
                         <group>

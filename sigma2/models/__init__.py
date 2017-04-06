@@ -17,3 +17,6 @@ import order_type
 import speciality
 import action_planning
 import maintenance_order
+import product_label
+import purchase_inherit
+import stock_inherit

@@ -36,6 +36,8 @@ class sigma2_asset(models.Model):
     child_ids = fields.One2many('sigma2.asset', 'parent_id', string='Activos hijos')
     location_id = fields.Many2one('sigma2.location', 'Zona de fábrica', ondelete='set null')
     stop_rate = fields.Integer('Afectación paro producción (%)')
+    computed_stop_rate = fields.Integer('Afectación paro producción (%) calculado en función de ascendentes',
+                                        compute='_compute_stop_rate')
     action_planning_ids = fields.One2many('sigma2.action.planning', 'asset_id', string='Gamas del activo')
     regulatory_inspection = fields.Boolean('Inspección reglamentaria', 
                                            compute='_compute_regulatory_inspection', 
@@ -45,7 +47,18 @@ class sigma2_asset(models.Model):
                                          search='_search_applicable_regulations')
     notes = fields.Text('Notas')
     active = fields.Boolean('Registro activo')
-    display_name = fields.Char('Activo', compute='_compute_display_name', search='_search_display_name',)
+    display_name = fields.Char('Activo', compute='_compute_display_name', search='_search_display_name')
+    # Campos para los equipos de medida (calibración)
+    calibration = fields.Boolean('Calibración', related='asset_type_id.calibration')
+    calibration_date = fields.Date('Fecha calibración')
+    next_calibration_date = fields.Date('Fecha prox. calibración')
+    calibrator_id = fields.Many2one('res.partner', 'Calibrador', ondelete='restrict')
+    required_precission = fields.Char('Precisión requerida')
+    instrument_range = fields.Char('Alcance instrumento')
+    calibration_range = fields.Char('Alcance calibración')
+    scale_division = fields.Char('División escala')
+    uncertainity = fields.Char('Incertidumbre')
+    ##
 
     _rec_name = 'display_name'
     
@@ -79,14 +92,25 @@ class sigma2_asset(models.Model):
     @api.depends('asset_class_id')
     def _compute_applicable_regulations(self):
         if self.asset_class_id:
-            self.applicable_regulations= self.asset_class_id.applicable_regulations
+            self.applicable_regulations = self.asset_class_id.applicable_regulations
         else:
             self.applicable_regulations = False
 
     def _search_applicable_regulations(self, operator, value):
         return [('asset_class_id.applicable_regulations', operator, value)]
         
-        
+    @api.one
+    @api.depends('stop_rate', 'parent_id')
+    def _compute_stop_rate(self):
+        rate = self.stop_rate
+        asset = self
+        while asset.parent_id:
+            asset = asset.parent_id
+            rate = rate * asset.stop_rate / 100
+
+        self.computed_stop_rate = rate
+
+
 class sigma2_asset_counter(models.Model):
     """Contador de activo para mantenimiento"""
 

@@ -54,7 +54,7 @@
 	                            <field name="ammount" widget="monetary"/>
 	                        </group>
 	                        <group>
-	                            <field name="active"/>
+	                            <field name="active" groups="sigma2.admin_group"/>
 	                        </group>
                         </group>
                         <group>

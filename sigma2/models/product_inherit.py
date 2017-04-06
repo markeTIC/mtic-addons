@@ -17,18 +17,21 @@ _logger = logging.getLogger(__name__)
 class product_template(models.Model):
     _inherit = 'product.template'
     _name = 'product.template'
+    _order = 'barcode'
 
-    barcode = fields.Char('Código', required=True, select=True)
+    barcode = fields.Char('Código', required=True, select=True, copy=False)
     ext_barcode = fields.Char('Código de barras', required=False, select=True)
     atex = fields.Boolean('Atex')
+    label_by_unit = fields.Boolean('Etiqueta por unidad')
 
     _defaults = {
         'barcode': lambda self,cr,uid,context={}: self.pool.get('ir.sequence').get(cr, uid, 'sigma2.product.barcode'),
         'sale_ok': False,
+        'label_by_unit': True,
     }
 
     _sql_constraints = [
-        ('barcode_uniq', 'unique(barcode)', _("No pueden existir dos productos con el mismo código de barras!"))
+        ('barcode_uniq', 'unique(barcode)', _("No pueden existir dos productos con el mismo código!"))
     ]
 
     def name_get(self, cr, user, ids, context=None):
@@ -45,6 +48,7 @@ class product_template(models.Model):
 class product_product(models.Model):
     _inherit = 'product.product'
     _name = 'product.product'
+    _order = 'barcode'
 
     def name_get(self, cr, user, ids, context=None):
         if context is None:
@@ -105,7 +109,6 @@ class product_product(models.Model):
         return result
 
     def name_search(self, cr, user, name='', args=None, operator='ilike', context=None, limit=100):
-        _logger.info("Buscando producto por nombre...")
         if not args:
             args = []
         if name:

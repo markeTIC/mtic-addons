@@ -23,8 +23,9 @@ class sigma2_action_planning(models.Model):
     procedure_id = fields.Many2one('sigma2.procedure', 'Procedimiento', select=True, ondelete='restrict')
     instruction = fields.Char('Instrucción')
     order_type_id = fields.Many2one('sigma2.order.type', 'Tipo de orden', select=True, ondelete='restrict')
+    speciality_id = fields.Many2one('sigma2.speciality', 'Especialidad', select=True, ondelete='restrict')
     asset_id = fields.Many2one('sigma2.asset', 'Activo mantenimiento', select=True, ondelete='restrict',
-                                domain="[('status', '=', 'active'), ('asset_type_id.preventive', '=', True), ]")
+                               domain="[('status', '=', 'active'), ('asset_type_id.preventive', '=', True), ]")
     period_type = fields.Selection(
         selection=[
             ('year', 'Año'),
@@ -35,7 +36,19 @@ class sigma2_action_planning(models.Model):
         required=True,
         string='Periodo')
     period_number = fields.Integer('Número periodos')
-    group = fields.Char('Grupo', required=True)
+    group = fields.Selection(
+        selection=[
+            ('A', 'Grupo A'),
+            ('B', 'Grupo B'),
+            ('C', 'Grupo C'),
+            ('D', 'Grupo D'),
+            ('E', 'Grupo E'),
+            ('F', 'Grupo F'),
+            ('G', 'Grupo G'),
+            ('H', 'Grupo H'),
+        ],
+        required=True,
+        string='Grupo')
     start_date = fields.Date('Fecha inicio')
     end_date = fields.Date('Fecha fin')
     last_date = fields.Date('Fecha último lanzamiento')
@@ -76,31 +89,16 @@ class sigma2_action_planning(models.Model):
         elif unit == 'year':
             return date + relativedelta(years=interval)
 
-#    def do_generate_preventive(self, cr, uid, group='A', context=None):
-#        """ Generar las órdenes de preventivo pendientes para el grupo indicado """
-#        _logger.info("Generando preventivo para el grupo: %s", group)
-#        ids = self.search(cr, uid, [('group', '=', group),
-#                                    ('active', '=', True)],
-#                                #    ('next_date', '<=', datetime.date.today().strftime('%Y-%m-%d'))],
-#                                # ('last_date', '<', next_date)],
-#                          context=context)
-#        if ids:
-#            self.generate_preventive(cr, uid, ids, context=context)
-
     @api.model
-    def do_generate_preventive(self, group='A'):
+    def do_generate_preventive(self, group='A', days_offset=0):
         """ Generar las órdenes de preventivo pendientes para el grupo indicado """
-        _logger.info("Generando preventivo para el grupo: %s", group)
+        _logger.info("Generando preventivo para el grupo %s con %d dias de antelacion", group, days_offset)
         ids = self.search([('group', '=', group), ('active', '=', True)])
         if not ids:
             return
 
         for action_planning in ids:
             _logger.info("Generando preventivo para: %s", action_planning.name)
-            if action_planning.end_date and fields.Date.from_string(action_planning.end_date) < datetime.date.today():
-                # si tiene fecha de fin, y se ha alcanzado
-                _logger.debug("Se ha alcanzado la fecha de fin %s", action_planning.end_date)
-                continue
             if not action_planning.asset_id.active:
                 # si la máquina no está activa (registro)
                 _logger.debug("La maquina no existe (registro desactivado)")
@@ -109,9 +107,13 @@ class sigma2_action_planning(models.Model):
                 # si la máquina no está en servicio
                 _logger.debug("La maquina no esta en servicio (%s)", action_planning.asset_id.status)
                 continue
+            if action_planning.end_date and fields.Date.from_string(action_planning.end_date) < datetime.date.today():
+                # si tiene fecha de fin, y se ha alcanzado
+                _logger.debug("Se ha alcanzado la fecha de fin %s", action_planning.end_date)
+                continue
 
             _logger.info("procesar %s", action_planning.name)
-            today = datetime.date.today()
+            launch_date = datetime.date.today() + datetime.timedelta(days=days_offset)
             next_date = False
             iterations = 0
             if not action_planning.next_date:
@@ -120,8 +122,8 @@ class sigma2_action_planning(models.Model):
             else:
                 next_date = fields.Date.from_string(action_planning.next_date)
 
-            while next_date and next_date <= today and iterations < 10:
-                # si hay varias órdenes pendientes de generar en la misma gama, se generan todas (hasta un máximo de 10)
+            while next_date and next_date <= launch_date and iterations < 20:
+                # si hay varias órdenes pendientes de generar en la misma gama, se generan todas (hasta un máximo de 20)
                 asset_level1, asset_level2, asset_level3 = False, False, False
                 asset_level1 = action_planning.asset_id
                 if action_planning.asset_id.parent_id:
@@ -131,6 +133,9 @@ class sigma2_action_planning(models.Model):
                     asset_level1 = action_planning.asset_id.parent_id.parent_id
                     asset_level2 = action_planning.asset_id.parent_id
                     asset_level3 = action_planning.asset_id
+                speciality_id = False
+                if action_planning.speciality_id:
+                    speciality_id = action_planning.speciality_id.id
                 new_mo = self.env['sigma2.maintenance.order'].create({
                     'order_type_id': action_planning.order_type_id.id,
                     'code': self.pool.get('ir.sequence').next_by_id(self._cr, self._uid, action_planning.order_type_id.counter.id, context={}),
@@ -141,7 +146,8 @@ class sigma2_action_planning(models.Model):
                     'asset_level3': asset_level3 and asset_level3.id,
                     'asset_id': action_planning.asset_id.id,
                     'description': u'Revisión preventivo: ' + action_planning.procedure_id.code + ' - ' + action_planning.procedure_id.name + ' Instr. ' + action_planning.instruction,
-                    'action_planning_id': action_planning.id
+                    'action_planning_id': action_planning.id,
+                    'speciality_id': speciality_id
                 })
                 _logger.info("generada orden %s para %s", new_mo.code, new_mo.asset_id.name)
                 iterations += 1

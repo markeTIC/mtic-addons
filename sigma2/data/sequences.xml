@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-    <data>
+    <data noupdate="1">
 
-		<record forcecreate="1" id="product_barcode_type_id" model="ir.sequence.type">
+		<record id="product_barcode_type_id" model="ir.sequence.type">
 			<field name="name">Código de productos para Sigma2</field>
 			<field name="code">sigma2.product.barcode</field>
 		</record>
 
-		<record forcecreate="1" id="product_barcode_id" model="ir.sequence">
+		<record id="product_barcode_id" model="ir.sequence">
 			<field name="name">Código de productos para Sigma2</field>
 			<field name="code">sigma2.product.barcode</field>
 			<field name="padding" eval="5" />
@@ -15,31 +15,38 @@
 			<field name="suffix"></field>
 		</record>
  
-		<record forcecreate="1" id="prev_maintenance_order_id" model="ir.sequence">
+		<record id="prev_maintenance_order_id" model="ir.sequence">
 			<field name="name">Número de orden de mantenimiento preventivo para Sigma2</field>
 			<field name="padding" eval="4" />
 			<field name="prefix">P%(y)s/</field>
 			<field name="suffix"></field>
 		</record>
 
-		<record forcecreate="1" id="corr_maintenance_order_id" model="ir.sequence">
+		<record id="corr_maintenance_order_id" model="ir.sequence">
 			<field name="name">Número de orden de mantenimiento correctivo para Sigma2</field>
 			<field name="padding" eval="4" />
 			<field name="prefix">C%(y)s/</field>
 			<field name="suffix"></field>
 		</record>
 
-		<record forcecreate="1" id="leg_maintenance_order_id" model="ir.sequence">
+		<record id="leg_maintenance_order_id" model="ir.sequence">
 			<field name="name">Número de orden inspección reglamentaria para Sigma2</field>
 			<field name="padding" eval="4" />
 			<field name="prefix">L%(y)s/</field>
 			<field name="suffix"></field>
 		</record>
 
-		<record forcecreate="1" id="mej_maintenance_order_id" model="ir.sequence">
+		<record id="mej_maintenance_order_id" model="ir.sequence">
 			<field name="name">Número de orden de mejora para Sigma2</field>
 			<field name="padding" eval="4" />
 			<field name="prefix">M%(y)s/</field>
+			<field name="suffix"></field>
+		</record>
+
+		<record id="cal_maintenance_order_id" model="ir.sequence">
+			<field name="name">Número de orden de calibración para Sigma2</field>
+			<field name="padding" eval="4" />
+			<field name="prefix">CAL%(y)s/</field>
 			<field name="suffix"></field>
 		</record>
 

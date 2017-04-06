@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="purchase_invoice_graph_view">
+            <field name="name">sigma2.purchase.invoice.month.graph</field>
+            <field name="model">sigma2.purchase_invoice_report</field>
+            <field name="arch" type="xml">
+                <graph string="Estadísticas de compras de mantenimiento" type="pivot">
+                    <field name="price_total" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="purchase_invoice_report_search_view" model="ir.ui.view">
+        <field name="name">sigma2.purchase.invoice.report.search</field>
+        <field name="model">sigma2.purchase_invoice_report</field>
+        <field name="arch" type="xml">
+            <search string="Compras de mantenimiento">
+                <filter string="Enero" name="filter_jan" domain="[('date_month','=','01')]"/>
+                <filter string="Febrero" name="filter_feb" domain="[('date_month','=','02')]"/>
+                <filter string="Marzo" name="filter_mar" domain="[('date_month','=','03')]"/>
+                <filter string="Abril" name="filter_apr" domain="[('date_month','=','04')]"/>
+                <filter string="Mayo" name="filter_may" domain="[('date_month','=','05')]"/>
+                <filter string="Junio" name="filter_jun" domain="[('date_month','=','06')]"/>
+                <filter string="Julio" name="filter_jul" domain="[('date_month','=','07')]"/>
+                <filter string="Agosto" name="filter_ago" domain="[('date_month','=','08')]"/>
+                <filter string="Septiembre" name="filter_sep" domain="[('date_month','=','09')]"/>
+                <filter string="Octubre" name="filter_oct" domain="[('date_month','=','10')]"/>
+                <filter string="Noviembre" name="filter_nov" domain="[('date_month','=','11')]"/>
+                <filter string="Diciembre" name="filter_dec" domain="[('date_month','=','12')]"/>
+                <separator/>
+                <filter string="Mes actual" name="filter_this_month" domain="[('date_month','=',context_today().strftime('%%m'))]"/>
+                <filter string="Mes anterior" name="filter_last_month" domain="[('date_month','=',(context_today()-datetime.timedelta(days=30)).strftime('%%m'))]"/>
+                <separator/>
+                <filter string="Este año" name="filter_this_year" domain="[('date_year','=',context_today().strftime('%%Y'))]"/>
+                <filter string="Año pasado" name="filter_last_year" domain="[('date_year','=',(context_today()-datetime.timedelta(days=365)).strftime('%%Y'))]"/>
+                <separator/>
+                <field name="cost_group_id"/>
+                <field name="cost_area_id"/>
+                <field name="investment_id"/>
+                <field name="asset_id"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="category_id"/>
+                <field name="date"/>
+                <group expand="1" string="Agrupar por">
+                    <filter string="Grupo de gasto" name="group_cost_group_id" context="{'group_by':'cost_group_id'}"/>
+                    <filter string="Área de coste" name="group_cost_area_id" context="{'group_by':'cost_area_id'}"/>
+                    <filter string="Inversión" name="group_investment_id" context="{'group_by':'investment_id'}"/>
+                    <filter string="Zona de fábrica" name="group_asset_id" context="{'group_by':'asset_id'}"/>
+                    <filter string="Producto" name="group_product_id" context="{'group_by':'product_id'}"/>
+                    <separator/>
+                    <filter string="Mes" name="group_month" context="{'group_by':'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="purchase_invoice_report_action" model="ir.actions.act_window">
+        <field name="name">Análisis de compras</field>
+        <field name="res_model">sigma2.purchase_invoice_report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="purchase_invoice_graph_view"/>
+        <field name="context">{'search_default_filter_this_year': 1, 'group_cost_group_id':1, 'group_by':[]}</field>
+    </record>
+
+    </data>
+</openerp>

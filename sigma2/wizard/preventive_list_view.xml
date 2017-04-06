@@ -7,7 +7,8 @@
               <field name="arch" type="xml">
                 <form string="Listado de preventivo">
                     <group string="Seleccionar órdenes para listado de mantenimiento preventivo.">
-                        <field name="date"/>
+                        <field name="from_date"/>
+                        <field name="to_date"/>
                         <field name="asset_line" widget="selection"/>
                     </group>
                     <footer>

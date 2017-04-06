@@ -5,3 +5,6 @@
 ################################################################
 
 import preventive_list
+import maintenance_order_list
+import maintenance_order_report
+import purchase_invoice_report

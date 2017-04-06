@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_maintenance_order_list" model="ir.ui.view">
+              <field name="name">Listado de órdenes de mantenimiento</field>
+              <field name="model">sigma2.maintenance_order_list</field>
+              <field name="arch" type="xml">
+                <form string="Listado de órdenes de mantenimiento">
+                    <group string="Seleccionar listado">
+                        <field name="list_type"/>
+                    </group>
+                    <group string="Filtro de órdenes">
+                        <field name="from_date"/>
+                        <field name="to_date"/>
+                        <field name="status"/>
+                        <field name="stop_time"/>
+                        <field name="origin_employee_id"    widget="selection"   options="{'no_create': True}"/>
+                        <field name="assigned_employee_id" options="{'no_create': True}"/>
+                        <field name="asset_line_id" widget="selection" on_change="onchange_asset_line(asset_line_id)"/>
+                        <field name="asset_id" options="{'no_create': True, 'limit': 15}"/>
+                    </group>
+                    <footer>
+                        <button name="print_report" string="Imprimir"  type="object" class="oe_highlight"  />
+                        <button string="Cancelar" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+              </field>
+        </record>
+
+        <act_window id="action_maintenance_order_list"
+                    key2="client_print_multi"
+                    name="Listado de órdenes"
+                    res_model="sigma2.maintenance_order_list"
+                    src_model="sigma2.maintenance.order"
+                    groups="sigma2.user_group"
+                    view_mode="form"
+                    target="new"
+                    view_type="form" />
+
+    </data>
+</openerp>

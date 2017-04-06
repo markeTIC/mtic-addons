@@ -5,7 +5,7 @@
             <field name="name">Orden mantenimiento: solo se puede borrar si estado es cancelada</field>
             <field name="model_id" ref="sigma2.model_sigma2_maintenance_order"/>
             <field name="global" eval="1"/>
-            <field name="domain_force">[('status','=','canceled')]</field>
+            <field name="domain_force">[('state','=','canceled')]</field>
             <field name="perm_create" eval="0"/>
             <field name="perm_read" eval="0"/>
             <field name="perm_write" eval="0"/>
@@ -13,10 +13,10 @@
         </record>
 
         <record id="maintenance_order_write_pending_only" model="ir.rule">
-            <field name="name">Orden mantenimiento: producción solo puede modificar si estado es pendiente</field>
+            <field name="name">Orden mantenimiento: producción solo puede modificar si estado es pendiente o stop</field>
             <field name="model_id" ref="sigma2.model_sigma2_maintenance_order"/>
             <field name="groups" eval="[(6,0,[ref('sigma2.production_group')])]"/>
-            <field name="domain_force">[('status','=','pending')]</field>
+            <field name="domain_force">['|', ('state','=','pending'), ('state','=','stop')]</field>
             <field name="perm_create" eval="1"/>
             <field name="perm_read" eval="0"/>
             <field name="perm_write" eval="1"/>
@@ -27,7 +27,7 @@
             <field name="name">Orden mantenimiento: el usuario de mantenimiento puede modificar ordenes en varios estados</field>
             <field name="model_id" ref="sigma2.model_sigma2_maintenance_order"/>
             <field name="groups" eval="[(6,0,[ref('sigma2.user_group')])]"/>
-            <field name="domain_force">['|', '|', '|', '|', ('status', '=', 'planned'), ('status', '=', 'open'), ('status', '=', 'parts'), ('status', '=', 'scaled'), ('status', '=', 'finished')]</field>
+            <field name="domain_force">['|', '|', '|', '|', ('state', '=', 'planned'), ('state', '=', 'open'), ('state', '=', 'parts'), ('state', '=', 'scaled'), ('state', '=', 'finished')]</field>
             <field name="perm_create" eval="1"/>
             <field name="perm_read" eval="0"/>
             <field name="perm_write" eval="1"/>
@@ -35,10 +35,10 @@
         </record>
 
         <record id="maintenance_order_supervisor_modify" model="ir.rule">
-            <field name="name">Orden mantenimiento: el supervisor puede modificar las cerradas</field>
+            <field name="name">Orden mantenimiento: el supervisor puede modificar las cerradas y canceladas</field>
             <field name="model_id" ref="sigma2.model_sigma2_maintenance_order"/>
             <field name="groups" eval="[(6,0,[ref('sigma2.supervisor_group')])]"/>
-            <field name="domain_force">[('status', '=', 'closed')]</field>
+            <field name="domain_force">['|', ('state', '=', 'closed'), ('state', '=', 'canceled')]</field>
             <field name="perm_create" eval="0"/>
             <field name="perm_read" eval="0"/>
             <field name="perm_write" eval="1"/>
@@ -60,7 +60,7 @@
             <field name="name">Orden mantenimiento: anular regla de solo leer las del mismo usuario (para mantenimiento)</field>
             <field name="model_id" ref="sigma2.model_sigma2_maintenance_order"/>
             <field name="groups" eval="[(6,0,[ref('sigma2.user_group')])]"/>
-            <field name="domain_force">[('status', '!=', '__XXX__')]</field>
+            <field name="domain_force">[('state', '!=', '__XXX__')]</field>
             <field name="perm_create" eval="0"/>
             <field name="perm_read" eval="1"/>
             <field name="perm_write" eval="0"/>

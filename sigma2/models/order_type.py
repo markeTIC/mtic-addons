@@ -24,6 +24,8 @@ class sigma2_order_type(models.Model):
         selection=[
             ('P', 'Preventivo'),
             ('C', 'Correctivo'),
+            ('IR', 'Inspección reglamentaria'),
+            ('CAL', 'Calibración'),
         ],
         required=False,
         string='Tipo mantenimiento')

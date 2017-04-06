@@ -15,7 +15,8 @@ _logger = logging.getLogger(__name__)
 class preventive_list(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
         super(preventive_list, self).__init__(cr, uid, name, context=context)
-        self.date = False
+        self.from_date = False
+        self.to_date = False
         self.asset_line = False
         self.localcontext.update({
             'time': time,
@@ -24,15 +25,16 @@ class preventive_list(report_sxw.rml_parse):
 
     def _get_lines(self, form):
         res = []
-        self.date = form['date']
+        self.from_date = form['from_date']
+        self.to_date = form['to_date']
         self.asset_line = form['asset_line']
-        preventive_code = self.date[2:4] + self.date[5:7] + self.date[8:10] + '-'
+        preventive_code = self.from_date[2:4] + self.from_date[5:7] + self.from_date[8:10] + '-'
         if self.asset_line:
             line = self.pool.get('sigma2.asset').read(self.cr, self.uid, [self.asset_line], ['code', 'name'],
                                                       context=self.localcontext)[0]
             order_ids = self.pool.get('sigma2.maintenance.order').search(
                 self.cr, self.uid,
-                [('order_type_id.type', '=', 'P'), ('date', '=', self.date), ('asset_level1.id', '=', self.asset_line)],
+                [('order_type_id.type', '=', 'P'), ('date', '>=', self.from_date), ('date', '<=', self.to_date), ('asset_level1.id', '=', self.asset_line)],
                 # order='asset_level1.code, asset_id.code', - por defecto ya está ordenado por código
                 context=self.localcontext)
             orders = self.pool.get('sigma2.maintenance.order').read(
@@ -51,7 +53,7 @@ class preventive_list(report_sxw.rml_parse):
                                                           context=self.localcontext)[0]
                 order_ids = self.pool.get('sigma2.maintenance.order').search(
                     self.cr, self.uid,
-                    [('order_type_id.type', '=', 'P'), ('date', '=', self.date), ('asset_level1.id', '=', line_id)],
+                    [('order_type_id.type', '=', 'P'), ('date', '>=', self.from_date), ('date', '<=', self.to_date), ('asset_level1.id', '=', line_id)],
                     # order='asset_level1.code, asset_id.code', - por defecto ya está ordenado por código
                     context=self.localcontext)
                 if order_ids:

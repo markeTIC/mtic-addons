@@ -55,7 +55,7 @@
 	                        </group>
 	                        <group>
                                 <field name="investment"/>
-	                            <field name="active"/>
+	                            <field name="active" groups="sigma2.admin_group"/>
 	                        </group>
                         </group>
                         <group>

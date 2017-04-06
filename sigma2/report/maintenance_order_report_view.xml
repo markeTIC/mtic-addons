@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="maintenance_order_graph_view">
+            <field name="name">sigma2.maintenance.order.month.graph</field>
+            <field name="model">sigma2.maintenance.order.report</field>
+            <field name="arch" type="xml">
+                <graph string="Estadísticas de órdenes de mantenimiento" type="pivot">
+                    <!-- field name="asset_level1" type="row"/-->
+                    <field name="repair_time_total" type="measure"/>
+                    <field name="stop_time_total" type="measure"/>
+                    <field name="stop_time_rated_total" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Custom reports (aka filters) -->
+        <record id="filter_maintenance_order_monthly_repair_time" model="ir.filters">
+            <field name="name">Tiempo reparación mensual</field>
+            <field name="model_id">sigma2.maintenance.order.report</field>
+            <field name="domain">['|',('state','=','finished'),('state','=','closed')]</field>
+            <field name="user_id" eval="False"/>
+            <field name="context">{'group_by': ['asset_level1'], 'col_group_by': ['date:month'], 'measures': ['repair_time_total']}</field>
+        </record>
+        <record id="filter_maintenance_order_monthly_stop_time" model="ir.filters">
+            <field name="name">Tiempo de paro por línea</field>
+            <field name="model_id">sigma2.maintenance.order.report</field>
+            <field name="domain">['|',('state','=','finished'),('state','=','closed')]</field>
+            <field name="user_id" eval="False"/>
+            <field name="context">{'group_by': ['asset_level1'], 'col_group_by': ['date:month'], 'measures': ['stop_time_total']}</field>
+        </record>
+
+        <record id="maintenance_order_report_search_view" model="ir.ui.view">
+        <field name="name">sigma2.maintenance.order.report.search</field>
+        <field name="model">sigma2.maintenance.order.report</field>
+        <field name="arch" type="xml">
+            <search string="Órdenes de mantenimiento">
+                <filter string="Enero" name="filter_jan" domain="[('date_month','=','01')]"/>
+                <filter string="Febrero" name="filter_feb" domain="[('date_month','=','02')]"/>
+                <filter string="Marzo" name="filter_mar" domain="[('date_month','=','03')]"/>
+                <filter string="Abril" name="filter_apr" domain="[('date_month','=','04')]"/>
+                <filter string="Mayo" name="filter_may" domain="[('date_month','=','05')]"/>
+                <filter string="Junio" name="filter_jun" domain="[('date_month','=','06')]"/>
+                <filter string="Julio" name="filter_jul" domain="[('date_month','=','07')]"/>
+                <filter string="Agosto" name="filter_ago" domain="[('date_month','=','08')]"/>
+                <filter string="Septiembre" name="filter_sep" domain="[('date_month','=','09')]"/>
+                <filter string="Octubre" name="filter_oct" domain="[('date_month','=','10')]"/>
+                <filter string="Noviembre" name="filter_nov" domain="[('date_month','=','11')]"/>
+                <filter string="Diciembre" name="filter_dec" domain="[('date_month','=','12')]"/>
+                <separator/>
+                <filter string="Mes actual" name="filter_this_month" domain="[('date_month','=',context_today().strftime('%%m'))]"/>
+                <filter string="Mes anterior" name="filter_last_month" domain="[('date_month','=',(context_today()-datetime.timedelta(days=30)).strftime('%%m'))]"/>
+                <separator/>
+                <filter string="Este año" name="filter_this_year" domain="[('date_year','=',context_today().strftime('%%Y'))]"/>
+                <filter string="Año pasado" name="filter_last_year" domain="[('date_year','=',(context_today()-datetime.timedelta(days=365)).strftime('%%Y'))]"/>
+                <separator/>
+                <filter string="Pendientes" name="filter_pending" domain="['|','|',('state','=','pending'),('state','=','stop'),('state','=','planned')]"/>
+                <filter string="En curso" name="filter_open" domain="['|','|',('state','=','open'),('state','=','parts'),('state','=','scaled')]"/>
+                <filter string="Finalizadas" name="filter_closed" domain="['|',('state','=','finished'),('state','=','closed')]"/>
+                <separator/>
+                <filter string="Preventivo" name="filter_preventive" domain="[('order_type_id.code','=','P')]"/>
+                <filter string="Correctivo" name="filter_corrective" domain="[('order_type_id.code','=','C')]"/>
+                <filter string="Mejora" name="filter_improvement" domain="[('order_type_id.code','=','M')]"/>
+                <filter string="Legal" name="filter_regulatory" domain="[('order_type_id.code','=','L')]"/>
+                <filter string="Calibraciones" name="filter_calibration" domain="[('order_type_id.code','=','CAL')]"/>
+                <separator/>
+                <field name="asset_level1"/>
+                <field name="asset_id"/>
+                <field name="location_id"/>
+                <field name="date_year"/>
+                <field name="date"/>
+                <group expand="1" string="Agrupar por">
+                    <filter string="Zona de fábrica" name="group_location_id" context="{'group_by':'location_id'}"/>
+                    <filter string="Línea" name="group_asset_level1" context="{'group_by':'asset_level1'}"/>
+                    <filter string="Máquina" name="group_asset_id" context="{'group_by':'asset_id'}"/>
+                    <filter string="Estado" name="group_status" context="{'group_by':'state'}"/>
+                    <separator/>
+                    <filter string="Mes" name="group_month" context="{'group_by':'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="maintenance_order_report_action" model="ir.actions.act_window">
+        <field name="name">Análisis de órdenes</field>
+        <field name="res_model">sigma2.maintenance.order.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="maintenance_order_graph_view"/>
+        <field name="context">{'search_default_group_asset_level1': 1, 'search_default_filter_closed': 1, 'search_default_filter_this_year': 1, 'search_default_filter_this_month': 1, 'search_default_filter_corrective': 1, 'group_by_no_leaf':1, 'group_by':[]}</field>
+    </record>
+
+    </data>
+</openerp>

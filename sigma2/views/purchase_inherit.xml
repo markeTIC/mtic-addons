@@ -8,24 +8,103 @@
             <field name="priority" eval="32" />
             <field name="arch" type="xml">
                 <data>
+                    <field name="partner_ref" position="attributes">
+                       <attribute name="invisible">1</attribute>
+                    </field>
+                    <field name="journal_id" position="after">
+                        <field name="cost_area_id"/>
+                        <field name="is_investment" invisible='1'/>
+                        <field name="investment_id" attrs="{'invisible':[('is_investment', '==', False)]}"/>
+                        <field name="asset_id" options="{'no_create': True}"/>
+                    </field>
+                    <xpath expr="//page[@string='Products']/field[@name='order_line']" position="attributes">
+                        <attribute name="context">{'default_cost_area_id': cost_area_id, 'default_investment_id': investment_id, 'default_asset_id': asset_id}</attribute>
+                    </xpath>
                     <xpath expr="//page[@string='Products']/field/tree/field[@name='taxes_id']" position="attributes">
                         <attribute name="invisible">1</attribute>
                     </xpath>
+                    <xpath expr="//page[@string='Products']/field/tree/field[@name='date_planned']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//page[@string='Products']/field/tree/field[@name='name']" position="after">
+                        <field name="cost_area_id"/>
+                        <field name="investment_id"/>
+                        <field name="asset_id" options="{'no_create': True}"/>
+                    </xpath>
+                    <xpath expr="//page[@string='RFQ &amp; Bid']" position="attributes">
+                       <attribute name="String">SdP y oferta</attribute>
+                    </xpath>
+                    <field name="incoterm_id" position="replace"></field>
+                    <field name="bid_date" position="attributes">
+                        <attribute name="String">Oferta recibida el</attribute>
+                    </field>
+                    <field name="bid_validity" position="attributes">
+                        <attribute name="String">Oferta válida hasta</attribute>
+                    </field>
                  </data>
             </field>
         </record>
 
-        <record id="incoming_picking_action" model="ir.actions.act_window">
-            <field name="name">Albaranes de compra</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">stock.picking</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form,calendar</field>
-            <field name="domain">[('picking_type_code', '=', 'incoming')]</field>
-            <field name="context">{}</field>
-            <field name="search_view_id" eval="False"/> <!-- Force empty -->
-            <field name="view_id" eval="False"/> <!-- Force empty -->
+        <record id="supplier_invoice_form_view" model="ir.ui.view">
+            <field name="name">sigma2.supplier_invoice_form_view</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="priority" eval="32" />
+            <field name="arch" type="xml">
+                <data>
+                    <field name="fiscal_position" position="replace"/>
+                    <label for="reference_type" position="replace"/>
+                    <field name="reference_type" position="replace"/>
+                    <field name="reference" position="replace"/>
+                    <field name="date_due" position="replace">
+                        <field name="date_value" />
+                    </field>
+                    <xpath expr="//page[@string='Invoice']/field/tree/field[@name='name']" position="after">
+                        <field name="cost_area_id"/>
+                        <field name="investment_id"/>
+                        <field name="asset_id" options="{'no_create': True}"/>
+                    </xpath>
+                    <xpath expr="//page[@string='Other Info']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <xpath expr="//page[@string='Payments']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                    <button name="invoice_open" position="replace" />
+                    <field name="supplier_invoice_number" position="replace">
+                        <field name="supplier_invoice_number" on_change="onchange_supplier_invoice_number(date_invoice)" />
+                    </field>
+                 </data>
+            </field>
         </record>
+
+        <record id="purchase_invoice_tree_view" model="ir.ui.view">
+            <field name="name">sigma2.purchase_invoice_tree_view</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="priority" eval="32" />
+            <field name="arch" type="xml">
+                <data>
+                    <field name="date_invoice" position="after">
+                        <field name="supplier_invoice_number"/>
+                        <field name="date_value" />
+                    </field>
+                    <field name="number" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </field>
+                    <field name="date_due" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </field>
+                    <field name="origin" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </field>
+                    <field name="residual" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </field>
+                </data>
+            </field>
+        </record>
+
 
     </data>
 </openerp>

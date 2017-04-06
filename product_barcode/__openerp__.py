@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (c) 2014 - 2015 markeTIC Solutions (http://www.marketic.eu)
-#                              Jose F. Fernandez <jffernandez@marketic.eu>
+#    Copyright (c) 2017 Fenix Engineering Solutions (http://www.fenix-es.com)
+#                       Jose F. Fernandez <jffernandez@fenix-es.com>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,23 +19,24 @@
 #
 ##############################################################################
 {
-    'name': 'Coordenadas en partners',
-    'version': '1.0.04',
+    'name': 'Código de barras en productos',
+    'version': '1.0.01',
     'category': '',
     'sequence': 1,
     'complexity': 'easy',
     'license': 'AGPL-3',
-    'author': 'markeTIC Solutions',
-    'website': 'www.marketic.eu',
-    'depends': ['base'],
-    'summary': 'Coordenadas en partners',
+    'author': 'Fenix Engineering Solutions',
+    'website': 'www.fenix-es.com',
+    'depends': ['base', 'product'],
+    'summary': 'Código de barras en productos',
     'description': """
-Coordenadas en partners
-=====================
-Añade los campos de coordenadas en partners.
+Código de barras en productos
+=============================
+- Añade el campo barcode al producto.
+- Elimina el campo ean13 del formulario.
     """,
     'data': [
-        'views/res_partner_view.xml',
+        'views/product_inherit.xml',
     ],
     'demo': [],
     'test': [],

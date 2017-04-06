@@ -4,6 +4,4 @@
 #    __openerp__.py file at the root folder of this module.    #
 ################################################################
 
-import preventive_list
-import create_product_labels
-import maintenance_order_list
+import models

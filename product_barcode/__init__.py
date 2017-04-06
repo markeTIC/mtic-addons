@@ -4,4 +4,4 @@
 #    __openerp__.py file at the root folder of this module.    #
 ################################################################
 
-import res_partner
+import models

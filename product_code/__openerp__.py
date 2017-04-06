@@ -19,27 +19,27 @@
 #
 ##############################################################################
 {
-    'name': 'Fabricantes de productos',
-    'version': '0.1.12',
-    'category': 'Mantenimiento',
+    'name': 'Código con secuencia en productos',
+    'version': '1.0.01',
+    'category': '',
     'sequence': 1,
     'complexity': 'easy',
     'license': 'AGPL-3',
     'author': 'Fenix Engineering Solutions',
     'website': 'www.fenix-es.com',
-    'depends': ['product'],
-    'summary': 'Mantenimiento de fabricantes de productos',
+    'depends': ['base', 'product'],
+    'summary': 'Código con secuencia en productos',
     'description': """
-Módulo de fabricantes
-=====================
-El módulo de fabricantes permite registrar los datos principales de los fabricantes de productos.
+Código en productos
+===================
+- Modifica el campo default_code del producto
+- Se cambia la visualización de [CODIGO] DESCRIPCION a CODIGO - DESCRIPCION
+- Se añade una constraint en el campo default_code para evitar que pueda repetirse
+- Se añade un contador para asignar los códigos de producto (default del campo)
     """,
     'data': [
-        'security/manufacturer_security.xml',
-        'security/ir.model.access.csv',
-        'data/manufacturer.xml',
-        'views/manufacturer.xml',
-        'views/product_template_manufacturer.xml',
+        'data/sequences.xml',
+        'views/product_inherit.xml',
     ],
     'demo': [],
     'test': [],
